@@ -19,7 +19,10 @@ namespace testing.Controllers
         private RoleManager<IdentityRole> _roleManager;
         private MedicalContext _dbContext;
 
-        public HomeController(MedicalContext Context,RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public HomeController(MedicalContext Context,
+            RoleManager<IdentityRole> roleManager, 
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -32,10 +35,12 @@ namespace testing.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> About()
         {
             var list = _dbContext.Medications.ToList();
             ViewData["meds"] = list;
+            var user = await _userManager.GetUserAsync(User);
+            await _userManager.AddToRoleAsync(user, "Patient");
             return View();
         }
 

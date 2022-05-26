@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Npgsql;
 using testing.Data;
 
 #nullable disable
@@ -46,6 +47,8 @@ namespace testing.Models
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseNpgsql("Host=localhost;database=popmedical_test;username=postgres;password=postgres");
             }
+            NpgsqlConnection.GlobalTypeMapper.MapEnum<Gender>("gender");
+            NpgsqlConnection.GlobalTypeMapper.MapEnum<BloodType>("public.bloodtype");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -235,11 +238,21 @@ namespace testing.Models
                     .HasMaxLength(50)
                     .HasColumnName("patronymic");
 
+                entity.Property(e => e.RoleId)
+                    .IsRequired()
+                    .HasColumnName("role_id");
+
                 entity.HasOne(d => d.Department)
                     .WithMany(p => p.Doctors)
                     .HasForeignKey(d => d.DepartmentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("doctor_department_id_fkey");
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.Doctors)
+                    .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_doctor_Role_RoleId1");
             });
 
             modelBuilder.Entity<Doctorsperdep>(entity =>
@@ -547,6 +560,19 @@ namespace testing.Models
                     .HasColumnName("name");
             });
 
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.ToTable("role");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("name");
+            });
+
+
             modelBuilder.Entity<Patient>(entity =>
             {
                 entity.HasKey(e => e.UserId)
@@ -581,6 +607,8 @@ namespace testing.Models
                     .IsRequired()
                     .HasMaxLength(50)
                     .HasColumnName("patronymic");
+                entity.Property(e => e.BloodType).HasColumnName("blood_type");
+                entity.Property(e => e.Gender).HasColumnName("gender");
 
                 entity.Property(e => e.SignDate).HasColumnName("sign_date");
             });

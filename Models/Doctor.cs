@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -25,8 +26,10 @@ namespace testing.Models
         public string Patronymic { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Address { get; set; }
+        public int RoleId { get; set; }
 
         public virtual Department Department { get; set; }
+        public virtual Role Role { get; set; }
         public virtual ICollection<Declaration> Declarations { get; set; }
         public virtual ICollection<Headdepartment> Headdepartments { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }

@@ -1,0 +1,116 @@
+﻿@using testing.Models
+@model testing.Models.RegisterPatientVM
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1 class="text-center">Регистрация нового пациента</h1>
+<a asp-area="Manager" asp-action="Index"><button type="button" class="btn btn-primary">Назад</button></a>
+<hr />
+<div class="row">
+    <div class="col-md-6 m-auto">
+        <form asp-action="Create">
+            <p>ФИО</p>
+            <div class="form-row justify-content-between">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col">
+            <div class="form-group">
+                <input asp-for="FirstName" class="form-control" placeholder="Имя" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            </div>
+            <div class="col">
+            <div class="form-group">
+                <input asp-for="LastName" class="form-control" placeholder="Фамилия"/>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            </div>
+            <div class="col">
+            <div class="form-group">
+                <input asp-for="Patronymic" class="form-control" placeholder="Отчество" />
+                <span asp-validation-for="Patronymic" class="text-danger"></span>
+            </div>
+            </div>
+            </div>
+            <div class="row">
+            <div class="form-group">
+                <div class="col">
+                <label asp-for="DateOfBirth" class="control-label"></label>
+                <input asp-for="DateOfBirth" type="date" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                </div>
+                </div>
+                <div class="col">
+            <div class="form-group">
+            <label asp-for="Gender" class="control-label"></label>
+            <select asp-for="Gender" asp-items="Html.GetEnumSelectList<Gender>()" class="form-control"  >
+                <option disabled selected>Выбрать...</option>
+            </select>                
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            </div>
+                <div class="col">
+            <div class="form-group">
+            <label asp-for="BloodType" class="control-label"></label>
+            <select asp-for="BloodType" asp-items="Html.GetEnumSelectList<BloodType>()" class="form-control"  >
+                <option disabled selected>Выбрать...</option>
+            </select>                
+                <span asp-validation-for="BloodType" class="text-danger"></span>
+            </div>
+            </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" placeholder="Укажите адрес..." />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="row">
+            <div class="col">
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input id="phone" type="text" asp-for="Phone" class="form-control" placeholder="+38 (000) 000-00-00" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            </div>
+            <div class="col">
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            </div>
+            </div>
+            <div class="row">
+            <div class="col">
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            </div>
+            <div class="col">
+            <div class="form-group">
+                <label asp-for="PasswordConfirm" class="control-label"></label>
+                <input asp-for="PasswordConfirm" class="form-control" />
+                <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
+            </div> 
+            </div>
+            </div>
+            <div class="form-group float-right">
+                <input type="submit" value="Создать запись" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script src="~/js/jQuery-Mask-Plugin-master/dist/jquery.mask.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#phone").mask("+99 (000) 000-00-00");
+    });
+</script>
+}
