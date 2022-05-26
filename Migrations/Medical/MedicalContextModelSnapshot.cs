@@ -394,6 +394,10 @@ namespace testing.Migrations.Medical
                         .HasColumnType("character varying(50)")
                         .HasColumnName("firstname");
 
+                    b.Property<Gender>("Gender")
+                        .HasColumnType("gender")
+                        .HasColumnName("gender");
+
                     b.Property<string>("Lastname")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -407,12 +411,13 @@ namespace testing.Migrations.Medical
                         .HasColumnName("patronymic");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("role_id");
 
                     b.HasKey("UserId")
                         .HasName("doctor_pkey");
 
-                    b.HasIndex("RoleId1");
+                    b.HasIndex("RoleId");
 
                     b.HasIndex(new[] { "DepartmentId" }, "IX_doctor_department_id");
 
@@ -902,15 +907,18 @@ namespace testing.Migrations.Medical
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("name");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Role");
+                    b.ToTable("role");
                 });
 
             modelBuilder.Entity("testing.Models.Schedule", b =>
@@ -1095,7 +1103,9 @@ namespace testing.Migrations.Medical
 
                     b.HasOne("testing.Models.Role", "Role")
                         .WithMany("Doctors")
-                        .HasForeignKey("RoleId1");
+                        .HasForeignKey("RoleId")
+                        .HasConstraintName("FK_doctor_Role_RoleId1")
+                        .IsRequired();
 
                     b.Navigation("Department");
 

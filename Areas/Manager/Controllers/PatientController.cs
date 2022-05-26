@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,10 +10,12 @@ using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using NpgsqlTypes;
 using testing.Models;
+using testing.Models;
 
 namespace testing.Controllers
 {
     [Area("Manager")]
+    //[Authorize(Roles = "Manager")]
     public class PatientController : Controller
     {
         private readonly MedicalContext _context;
@@ -72,7 +75,9 @@ namespace testing.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = patient.Email, Email = patient.Email };
+                var user = new IdentityUser { UserName = patient.Email,
+                                                Email = patient.Email,
+                                                PhoneNumber = patient.Phone};
                 var result = await _userManager.CreateAsync(user, patient.Password);
                 await _userManager.AddToRoleAsync(user, "Patient");
                 var created_user = await _userManager.FindByEmailAsync(patient.Email);

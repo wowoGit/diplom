@@ -215,6 +215,8 @@ namespace testing.Models
                     .HasColumnType("date")
                     .HasColumnName("date_of_birth");
 
+                entity.Property(e => e.Gender).HasColumnName("gender");
+
                 entity.Property(e => e.DepartmentId).HasColumnName("department_id");
 
                 entity.Property(e => e.EmploymentDate)

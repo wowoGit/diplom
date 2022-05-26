@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,19 @@ namespace testing.Areas.Admin.Controllers
     public class DoctorController : Controller
     {
         private readonly MedicalContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public DoctorController(MedicalContext context)
+        public DoctorController(MedicalContext context,
+            RoleManager<IdentityRole> roleManager, 
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _signInManager = signInManager;
         }
 
         // GET: Admin/Doctor
@@ -59,13 +69,23 @@ namespace testing.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,DepartmentId,EmploymentDate,Experience,About,Cabinet,Firstname,Lastname,Patronymic,DateOfBirth,Address,RoleId")] Doctor doctor)
+        public async Task<IActionResult> Create(RegisterDoctorVM doctor)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(doctor);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var user = new IdentityUser { UserName = doctor.Email,
+                                                Email = doctor.Email,
+                                                PhoneNumber = doctor.Phone};
+                var result = await _userManager.CreateAsync(user, doctor.Password);
+                if(result.Succeeded) {
+                    await _userManager.AddToRoleAsync(user, "Doctor");
+                    var created_user = await _userManager.FindByEmailAsync(doctor.Email);
+                    Doctor doc =(Doctor)doctor;
+                    doc.UserId = created_user.Id;
+                    await _context.Doctors.AddAsync(doc);
+                    await _context.SaveChangesAsync();
+                    RedirectToAction("Index");
+                }
             }
             ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Name", doctor.DepartmentId);
             ViewData["RoleId"] = new SelectList(_context.Set<Role>(), "Id", "Name", doctor.RoleId);
