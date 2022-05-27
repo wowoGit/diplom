@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using testing.Models;
+using testing.Services;
 
 namespace testing.Areas.Admin.Controllers
 {
@@ -14,23 +15,15 @@ namespace testing.Areas.Admin.Controllers
     public class DoctorController : Controller
     {
         private readonly MedicalContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public DoctorController(MedicalContext context,
-            RoleManager<IdentityRole> roleManager, 
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+        public DoctorController(MedicalContext context)
         {
             _context = context;
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _signInManager = signInManager;
         }
 
         // GET: Admin/Doctor
-        public async Task<IActionResult> Index()
+        [Route("public/doctors")]
+        public async Task<IActionResult> Index([FromServices] IDoctorCreationService creation_service)
         {
             var medicalContext = _context.Doctors.Include(d => d.Department).Include(d => d.Role);
             return View(await medicalContext.ToListAsync());
@@ -57,7 +50,7 @@ namespace testing.Areas.Admin.Controllers
         }
 
         // GET: Admin/Doctor/Create
-        public IActionResult Create()
+        public IActionResult Create([FromServices] IDoctorCreationService creation_service)
         {
             ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Name");
             ViewData["RoleId"] = new SelectList(_context.Set<Role>(), "Id", "Name");
@@ -69,22 +62,13 @@ namespace testing.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(RegisterDoctorVM doctor)
+        public async Task<IActionResult> Create([FromServices] IDoctorCreationService creation_service, RegisterDoctorVM doctor)
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = doctor.Email,
-                                                Email = doctor.Email,
-                                                PhoneNumber = doctor.Phone};
-                var result = await _userManager.CreateAsync(user, doctor.Password);
+                var result = await creation_service.CreateDoctor(doctor);
                 if(result.Succeeded) {
-                    await _userManager.AddToRoleAsync(user, "Doctor");
-                    var created_user = await _userManager.FindByEmailAsync(doctor.Email);
-                    Doctor doc =(Doctor)doctor;
-                    doc.UserId = created_user.Id;
-                    await _context.Doctors.AddAsync(doc);
-                    await _context.SaveChangesAsync();
-                    RedirectToAction("Index");
+                    RedirectToAction(nameof(Index));
                 }
             }
             ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Name", doctor.DepartmentId);
@@ -172,8 +156,8 @@ namespace testing.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var doctor = await _context.Doctors.FindAsync(id);
-            _context.Doctors.Remove(doctor);
+            var doctor = await _context.Users.FindAsync(id);
+            _context.Users.Remove(doctor);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

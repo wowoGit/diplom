@@ -1,10 +1,5 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
-textarea {
-    height: 200px;
-    min-height: 200px;
-    max-height: 250px;
-}
 a.navbar-brand {
   white-space: normal;
   text-align: center;
@@ -85,4 +80,9 @@ td {
 }
 th {
     text-align: center;
+}
+textarea {
+    height: 100px!important;
+    min-height: 100px;
+    max-height: 250px;
 }

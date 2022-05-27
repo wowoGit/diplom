@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using testing.Data;
 using testing.Models;
+using testing.Services;
 
 namespace testing
 {
@@ -46,6 +47,7 @@ namespace testing
                 options.Password.RequiredLength = 6;
                 options.Password.RequiredUniqueChars = 1;
             });
+            services.AddScoped<IDoctorCreationService, DoctorCreationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
