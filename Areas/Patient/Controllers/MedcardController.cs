@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,17 +14,20 @@ namespace testing.Areas.Patient.Controllers
     public class MedcardController : Controller
     {
         private readonly MedicalContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public MedcardController(MedicalContext context)
+        public MedcardController(MedicalContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Patient/Medcard
         public async Task<IActionResult> Index()
         {
-            var medicalContext = _context.Medcards.Include(m => m.Patient);
-            return View(await medicalContext.ToListAsync());
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var user_medcard = _context.Medcards.Include(m => m.Patient).Where(e => user.Id == e.PatientId).Single();
+            return View((Medcard)user_medcard);
         }
 
         // GET: Patient/Medcard/Details/5

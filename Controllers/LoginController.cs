@@ -9,12 +9,21 @@ using testing.ViewModels;
 
 namespace testing.Controllers
 {
-    [Authorize]
     public class LoginController : Controller
     {
+        private readonly SignInManager<IdentityUser> signInManager;
+           private readonly UserManager<IdentityUser> userManager;
+        public LoginController(
+            [FromServices] SignInManager<IdentityUser> _signInManager,
+            [FromServices] UserManager<IdentityUser> _userManager)
+        {
+            signInManager = _signInManager;
+            userManager = _userManager;
+        }
+            
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<IActionResult> Index(LoginVM input,
+        public async Task<IActionResult> Login(LoginVM input,
             [FromServices] SignInManager<IdentityUser> signInManager,
             [FromServices] UserManager<IdentityUser> userManager)
         {
@@ -26,7 +35,7 @@ namespace testing.Controllers
                                                                lockoutOnFailure: false);
                 if(result.Succeeded)
                 {
-                    var user = await userManager.FindByEmailAsync(input.Email);
+                    var user = await userManager.FindByNameAsync(input.Email);
                     var userRoles = await userManager.GetRolesAsync(user);
                     if(userRoles.Count > 0)
                     {
@@ -48,9 +57,17 @@ namespace testing.Controllers
             
             return View();
         }
-        public IActionResult Index()
+        public IActionResult Login()
         {
             return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home", new { area = "" });
         }
 
     }

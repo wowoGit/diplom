@@ -1,4 +1,4 @@
-﻿@model IEnumerable<testing.Models.Medcard>
+﻿@model testing.Models.Medcard
 
 @{
     ViewData["Title"] = "Index";
@@ -7,47 +7,5 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    @Model.Patient.Firstname
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ManagerId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IssuedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ExpiredDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Patient)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ManagerId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IssuedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExpiredDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Patient.UserId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.PatientId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PatientId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PatientId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>

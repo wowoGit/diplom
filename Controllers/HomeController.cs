@@ -30,7 +30,7 @@ namespace testing.Controllers
             _dbContext = Context;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             //var user = new IdentityUser { Email = "patient@gmail.com", UserName = "patient@gmail.com" };
             //await _userManager.CreateAsync(user, "123123");
