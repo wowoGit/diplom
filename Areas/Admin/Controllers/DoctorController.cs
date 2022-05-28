@@ -22,8 +22,8 @@ namespace testing.Areas.Admin.Controllers
         }
 
         // GET: Admin/Doctor
-        [Route("public/doctors")]
-        public async Task<IActionResult> Index([FromServices] IDoctorCreationService creation_service)
+        [Route("Public/Doctors")]
+        public async Task<IActionResult> Index()
         {
             var medicalContext = _context.Doctors.Include(d => d.Department).Include(d => d.Role);
             return View(await medicalContext.ToListAsync());
@@ -50,7 +50,7 @@ namespace testing.Areas.Admin.Controllers
         }
 
         // GET: Admin/Doctor/Create
-        public IActionResult Create([FromServices] IDoctorCreationService creation_service)
+        public IActionResult Create()
         {
             ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Name");
             ViewData["RoleId"] = new SelectList(_context.Set<Role>(), "Id", "Name");

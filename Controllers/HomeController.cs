@@ -30,17 +30,16 @@ namespace testing.Controllers
             _dbContext = Context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            //var user = new IdentityUser { Email = "patient@gmail.com", UserName = "patient@gmail.com" };
+            //await _userManager.CreateAsync(user, "123123");
+            //await _userManager.AddToRoleAsync(user, "Patient");
             return View();
         }
 
-        public async Task<IActionResult> About()
+        public IActionResult About()
         {
-            var list = _dbContext.Medications.ToList();
-            ViewData["meds"] = list;
-            var user = await _userManager.GetUserAsync(User);
-            await _userManager.AddToRoleAsync(user, "Patient");
             return View();
         }
 

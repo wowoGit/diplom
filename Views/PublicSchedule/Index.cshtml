@@ -1,0 +1,32 @@
+﻿@model IEnumerable<testing.Models.Schedule>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index public</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Doctor)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Doctor.UserId)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

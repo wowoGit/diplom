@@ -24,6 +24,8 @@
     <Folder Include="Areas\Doctor\Views\" />
     <Folder Include="Areas\Manager\Data\" />
     <Folder Include="Areas\Manager\Models\" />
+    <Folder Include="Areas\Patient\Data\" />
+    <Folder Include="Areas\Patient\Models\" />
     <Folder Include="Data\Migrations\" />
     <Folder Include="Migrations\Medical\" />
   </ItemGroup>
