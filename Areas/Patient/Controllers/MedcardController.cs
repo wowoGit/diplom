@@ -27,7 +27,7 @@ namespace testing.Areas.Patient.Controllers
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             var user_medcard = _context.Medcards.Include(m => m.Patient).Where(e => user.Id == e.PatientId).Single();
-            return View((Medcard)user_medcard);
+            return View(user_medcard);
         }
 
         // GET: Patient/Medcard/Details/5
