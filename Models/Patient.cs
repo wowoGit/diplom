@@ -10,6 +10,8 @@ namespace testing.Models
     {
         public string UserId { get; set; }
 
+        [Display(Name ="Дата регистрации")]
+        [DataType(DataType.Date)]
         public DateTime SignDate { get; set; }
         [Display(Name ="Имя")]
         public string Firstname { get; set; }

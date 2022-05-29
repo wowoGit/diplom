@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using testing.Models;
+using testing.ViewModels;
 
 namespace testing.Areas.Patient.Controllers
 {
@@ -26,8 +27,15 @@ namespace testing.Areas.Patient.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var user_medcard = _context.Medcards.Include(m => m.Patient).Where(e => user.Id == e.PatientId).Single();
-            return View(user_medcard);
+            var userMedcard = _context.Medcards.Include(m => m.Patient)
+                .Where(e => user.Id == e.PatientId)
+                .Single();
+            MedcardVM medcardviewmodel = new MedcardVM
+            {
+                user_info = user,
+                user_medcard = userMedcard
+            };
+            return View(medcardviewmodel);
         }
 
         // GET: Patient/Medcard/Details/5

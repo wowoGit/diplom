@@ -1,0 +1,34 @@
+﻿@model IPagedList<testing.Models.History>
+@{
+    ViewData["Title"] = "Index";
+}
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Bootstrap4.Core;
+@using X.PagedList;
+
+<h2 class="text-center mb-lg-5">Ваши посещения</h2>
+<div class="d-flex justify-content-center">
+    @foreach (var history_record in Model)
+    {
+        var department = history_record.Appointment.Schedule.Doctor.Department.Name;
+        var diagnosis = history_record.Diagnosis;
+        var doctor_fullname = history_record.Appointment.Schedule.Doctor.Lastname +
+            ' ' + history_record.Appointment.Schedule.Doctor.Firstname +
+            ' ' + history_record.Appointment.Schedule.Doctor.Patronymic;
+        <div class="card border-primary mb-3 m-2">
+            <div class="card-header font-weight-bold">@department</div>
+            <div class="card-body text-dark">
+                <h5 class="card-title">@doctor_fullname</h5>
+                <p class="card-text">@diagnosis</p>
+            </div>
+        </div>
+    }
+</div>
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+    new Bootstrap4PagedListRenderOptions
+    {
+        UlElementClasses = new string[] { "pagination", "justify-content-center" },
+        LiElementClasses = new string[] {"page-item"},
+        ActiveLiElementClass = "active",
+    }
+    )

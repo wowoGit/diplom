@@ -1,11 +1,78 @@
-﻿@model testing.Models.Medcard
-
+﻿@model testing.Models.MedcardVM 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
-    @Model.Patient.Firstname
-</p>
+<h2 class="text-center mb-lg-5">Общая информация</h2>
+<div class="col-10 m-auto">
+        <form asp-action="Index">
+            <div class="form-row justify-content-between">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col">
+            <div class="form-group">
+                <label asp-for="user_medcard.Patient.Firstname" class="control-label"></label>
+                <input readonly asp-for="user_medcard.Patient.Firstname" class="form-control" placeholder="Имя" />
+                <span asp-validation-for="user_medcard.Patient.Firstname" class="text-danger"></span>
+            </div>
+            </div>
+            <div class="col">
+            <div class="form-group">
+                <label asp-for="user_medcard.Patient.Lastname" class="control-label"></label>
+                <input readonly asp-for="user_medcard.Patient.Lastname" class="form-control" placeholder="Фамилия"/>
+                <span asp-validation-for="user_medcard.Patient.Lastname" class="text-danger"></span>
+            </div>
+            </div>
+            <div class="col">
+            <div class="form-group">
+                <label asp-for="user_medcard.Patient.Patronymic" class="control-label"></label>
+                <input readonly asp-for="user_medcard.Patient.Patronymic" class="form-control" placeholder="Отчество" />
+                <span asp-validation-for="user_medcard.Patient.Patronymic" class="text-danger"></span>
+            </div>
+            </div>
+            </div>
+            <div class="row">
+            <div class="form-group">
+                <div class="col">
+                <label asp-for="user_medcard.Patient.DateOfBirth" class="control-label"></label>
+                <input readonly asp-for="user_medcard.Patient.DateOfBirth" type="date" class="form-control" />
+                <span asp-validation-for="user_medcard.Patient.DateOfBirth" class="text-danger"></span>
+                </div>
+                </div>
+                <div class="col">
+            <div class="form-group">
+            <label asp-for="user_medcard.Patient.Gender"  class="control-label"></label>
+            <input readonly value="@Html.DisplayFor(model => model.user_medcard.Patient.Gender)"  class="form-control"/>
+                <span asp-validation-for="user_medcard.Patient.Gender" class="text-danger"></span>
+            </div>
+            </div>
+                <div class="col">
+            <div class="form-group">
+            <label asp-for="user_medcard.Patient.BloodType" class="control-label"></label>
+            <input readonly value="@Html.DisplayFor(model => model.user_medcard.Patient.BloodType)" class="form-control"/>
+                <span asp-validation-for="user_medcard.Patient.BloodType" class="text-danger"></span>
+            </div>
+            </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="user_medcard.Patient.Address" class="control-label"></label>
+                <input asp-for="user_medcard.Patient.Address" class="form-control" placeholder="Укажите адрес..." />
+                <span asp-validation-for="user_medcard.Patient.Address" class="text-danger"></span>
+            </div>
+            <div class="row">
+            <div class="col">
+            <div class="form-group">
+                <label asp-for="user_info.PhoneNumber" class="control-label"></label>
+                <input id="phone" type="text" asp-for="user_info.PhoneNumber" class="form-control" placeholder="+38 (000) 000-00-00" />
+                <span asp-validation-for="user_info.PhoneNumber" class="text-danger"></span>
+            </div>
+            </div>
+            <div class="col">
+            <div class="form-group">
+                <label asp-for="user_info.Email" class="control-label"></label>
+                <input asp-for="user_info.Email" class="form-control" />
+                <span asp-validation-for="user_info.Email" class="text-danger"></span>
+            </div>
+            </div>
+            </div>
+        </form>
+</div>
