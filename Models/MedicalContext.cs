@@ -18,6 +18,7 @@ namespace testing.Models
 
         public virtual DbSet<Appointment> Appointments { get; set; }
         public virtual DbSet<Completedmeeting> Completedmeetings { get; set; }
+        public virtual DbSet<Allmeeting> Allmeetings { get; set; }
         public virtual DbSet<Declaration> Declarations { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Doctor> Doctors { get; set; }

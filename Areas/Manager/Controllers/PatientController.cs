@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using NpgsqlTypes;
 using testing.Models;
-using testing.Models;
 
 namespace testing.Controllers
 {

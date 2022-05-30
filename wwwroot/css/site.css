@@ -86,3 +86,6 @@ textarea {
     min-height: 100px;
     max-height: 250px;
 }
+.card {
+    max-width: 18rem;
+}

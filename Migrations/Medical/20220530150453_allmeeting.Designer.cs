@@ -10,8 +10,8 @@ using testing.Models;
 namespace testing.Migrations.Medical
 {
     [DbContext(typeof(MedicalContext))]
-    [Migration("20220526210015_DoctorTableUpdate")]
-    partial class DoctorTableUpdate
+    [Migration("20220530150453_allmeeting")]
+    partial class allmeeting
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -218,6 +218,38 @@ namespace testing.Migrations.Medical
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("testing.Models.Allmeeting", b =>
+                {
+                    b.Property<DateTime>("Appdate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("AppointmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Depname")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Diagnosis")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Firstname")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Info")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Lastname")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MedcardId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Patronymic")
+                        .HasColumnType("text");
+
+                    b.ToTable("Allmeetings");
+                });
+
             modelBuilder.Entity("testing.Models.Appointment", b =>
                 {
                     b.Property<int>("Id")
@@ -257,6 +289,21 @@ namespace testing.Migrations.Medical
 
             modelBuilder.Entity("testing.Models.Completedmeeting", b =>
                 {
+                    b.Property<DateTime>("App_date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("App_info")
+                        .HasColumnType("text");
+
+                    b.Property<string>("D_fname")
+                        .HasColumnType("text");
+
+                    b.Property<string>("D_lname")
+                        .HasColumnType("text");
+
+                    b.Property<string>("D_patro")
+                        .HasColumnType("text");
+
                     b.Property<DateTime?>("Datec")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("datec");
@@ -279,10 +326,16 @@ namespace testing.Migrations.Medical
                         .HasColumnType("character varying(50)")
                         .HasColumnName("doc");
 
+                    b.Property<string>("Dose")
+                        .HasColumnType("text");
+
                     b.Property<string>("Fname")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
                         .HasColumnName("fname");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Lname")
                         .HasMaxLength(50)
@@ -294,10 +347,16 @@ namespace testing.Migrations.Medical
                         .HasColumnType("character varying(50)")
                         .HasColumnName("name");
 
+                    b.Property<string>("Patronymic")
+                        .HasColumnType("text");
+
                     b.Property<string>("Pname")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
                         .HasColumnName("pname");
+
+                    b.Property<string>("Proc_result")
+                        .HasColumnType("text");
 
                     b.ToTable("completedmeetings");
                 });

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using testing.Models;
@@ -9,9 +10,10 @@ using testing.Models;
 namespace testing.Migrations.Medical
 {
     [DbContext(typeof(MedicalContext))]
-    partial class MedicalContextModelSnapshot : ModelSnapshot
+    [Migration("20220530130208_wtf")]
+    partial class wtf
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -255,6 +257,21 @@ namespace testing.Migrations.Medical
 
             modelBuilder.Entity("testing.Models.Completedmeeting", b =>
                 {
+                    b.Property<DateTime>("App_date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("App_info")
+                        .HasColumnType("text");
+
+                    b.Property<string>("D_fname")
+                        .HasColumnType("text");
+
+                    b.Property<string>("D_lname")
+                        .HasColumnType("text");
+
+                    b.Property<string>("D_patro")
+                        .HasColumnType("text");
+
                     b.Property<DateTime?>("Datec")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("datec");
@@ -277,10 +294,16 @@ namespace testing.Migrations.Medical
                         .HasColumnType("character varying(50)")
                         .HasColumnName("doc");
 
+                    b.Property<string>("Dose")
+                        .HasColumnType("text");
+
                     b.Property<string>("Fname")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
                         .HasColumnName("fname");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Lname")
                         .HasMaxLength(50)
@@ -292,10 +315,16 @@ namespace testing.Migrations.Medical
                         .HasColumnType("character varying(50)")
                         .HasColumnName("name");
 
+                    b.Property<string>("Patronymic")
+                        .HasColumnType("text");
+
                     b.Property<string>("Pname")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
                         .HasColumnName("pname");
+
+                    b.Property<string>("Proc_result")
+                        .HasColumnType("text");
 
                     b.ToTable("completedmeetings");
                 });

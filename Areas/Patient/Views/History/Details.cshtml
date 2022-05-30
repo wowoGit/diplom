@@ -1,0 +1,104 @@
+﻿@model IEnumerable<testing.Models.Completedmeeting>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var record = Model.First();
+    var D_lname = record.D_lname;
+    var D_fname = record.D_fname;
+    var D_patro = record.D_patro;
+    var App_date = record.App_date;
+    var Diag = record.Diag;
+    var App_info = record.App_info;
+
+}
+<h2 class="text-center mb-lg-5">Подробности вашего посещения</h2>
+<div class="col-10 m-auto">
+        <form asp-action="Index">
+            <div class="form-row justify-content-between">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col">
+            <div class="form-group">
+                <label asp-for="@D_lname" class="control-label"></label>
+                <input readonly asp-for="@D_lname" class="form-control" placeholder="Имя" />
+            </div>
+            </div>
+            <div class="col">
+            <div class="form-group">
+                <label asp-for="@D_fname" class="control-label"></label>
+                <input readonly asp-for="@D_fname" class="form-control" placeholder="Фамилия"/>
+            </div>
+            </div>
+            <div class="col">
+            <div class="form-group">
+                <label asp-for="@D_patro" class="control-label"></label>
+                <input readonly asp-for="@D_patro" class="form-control" placeholder="Отчество" />
+            </div>
+            </div>
+            </div>
+            <div class="row">
+                <div class="col">
+            <div class="form-group">
+                <label asp-for="@App_date" class="control-label"></label>
+                <input readonly asp-for="@App_date" type="date" class="form-control" />
+                </div>
+                </div>
+                <div class="col">
+            <div class="form-group">
+            <label asp-for="@Diag"  class="control-label"></label>
+            <input readonly asp-for="@Diag"  class="form-control"/>
+            </div>
+            </div>
+                <div class="col">
+            <div class="form-group">
+            <label asp-for="@App_info" class="control-label"></label>
+            <input readonly asp-for="@App_info" class="form-control"/>
+            </div>
+            </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                <label class="control-label">Назначенные препараты</label>
+            </div>
+                <div class="col">
+                <label class="control-label">Указания к приему</label>
+            </div>
+            </div>
+                @foreach(var med in Model.Select(m => m.Name).Distinct())
+            {
+                        var dose = Model.Where(m => m.Name == med).Select(m => m.Dose).First();
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                <input readonly asp-for="@med" class="form-control"/>
+                    </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                <input readonly asp-for="@dose" class="form-control"/>
+                    </div>
+                    </div>
+            </div>
+            }
+            <div class="row">
+                <div class="col">
+                <label class="control-label">Назначенные препараты</label>
+            </div></div>
+                @foreach(var proc in Model.Select(m => m.Pname).Distinct())
+                    {
+                        var result = Model.Where(m => m.Pname == proc).Select(m => m.Proc_result).First();
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                <input readonly asp-for="@proc" class="form-control"/>
+                    </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                <input readonly asp-for="@result" class="form-control"/>
+                    </div>
+                    </div>
+            </div>
+            }
+        </form>
+</div>

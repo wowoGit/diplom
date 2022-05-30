@@ -24,12 +24,18 @@ namespace testing.Areas.Patient.Controllers
         {
             var page_number = page ?? 1;
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var user_history = _context.Histories.Include(h => h.Appointment)
-                .ThenInclude(a => a.Schedule)
-                .ThenInclude(s => s.Doctor)
-                .ThenInclude(d => d.Department);
-            var user_history_page = user_history.ToPagedList(page_number, 4);
+            //var user_history = _context.Histories.Include(h => h.Appointment)
+            //    .ThenInclude(a => a.Schedule)
+            //    .ThenInclude(s => s.Doctor)
+            //    .ThenInclude(d => d.Department).Where(m => m.Appointment.MedcardId == user.Id);
+            var user_history = _context.Allmeetings.Where(model => model.MedcardId == user.Id).OrderByDescending(m => m.Appdate);
+            var user_history_page = user_history.ToPagedList(page_number, 3);
             return View(user_history_page);
+        }
+        public async Task<IActionResult> Details(int id)
+        {
+            var history_record = await _context.Completedmeetings.Where(h => h.Id == id).ToListAsync();
+                return View(history_record);
         }
     }
 }
