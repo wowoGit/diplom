@@ -11,59 +11,81 @@
 @using X.PagedList;
 <h1>Index public</h1>
 
-<div class="container">
-    <div class="modal fade" id="myModal" data-url="@Url.Action("Create","Appointment", new { area = "Patient" })" role="dialog" ></div>
+<div class="container m-auto">
+    <div class="modal fade m-auto" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div id="myModalContent"></div>
+    </div>
 
-            <div class="row">
-            <!-- CHECKBOX LIST -->
-            @foreach(var date in Model)
-            {
+    <div class="row">
+        <!-- CHECKBOX LIST -->
+        @foreach (var date in Model)
+        {
 
-                <div class="col schedule my-4 ">
-            <div class="bg-light-gray h-100 card rounded border-1 shadow-sm position-relative">
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-4 pb-4 border-bottom border-dark">
-                        <i class="far fa-calendar-alt fa-3x"></i>
-                        <div class="ms-3">
-                            <h4 class="text-uppercase fw-weight-bold mb-0">@date.Date.DayOfWeek</h4>
-                            <p class="text-gray fst-italic mb-0">@date.Date.ToLongDateString()</p>
+            <div class="col schedule my-4 ">
+                <div class="bg-light-gray h-100 card rounded border-1 shadow-sm position-relative">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-4 pb-4 border-bottom border-dark">
+                            <i class="far fa-calendar-alt fa-3x"></i>
+                            <div class="ms-3">
+                                <h4 class="text-uppercase fw-weight-bold mb-0">@date.Date.DayOfWeek</h4>
+                                <p class="text-gray fst-italic mb-0">@date.Date.ToLongDateString()</p>
+                            </div>
                         </div>
+                        @foreach (var time in date.records)
+                        {
+                            @if (time.Id != null)
+                            {
+                                <a class="my-2" href="#"><button disabled class=" bg-danger padding-5px-tb padding-15px-lr border-0 margin-10px-bottom text-white font-size16 xs-font-size13">@time.DateTime.ToString("HH:mm")</button></a>
+                            }
+                            else
+                            {
+                                <button type="button" data-id="@time.ScheduleId" class="time-button button bg-sky border-0 padding-5px-tb padding-15px-lr  margin-10px-bottom text-white font-size16 xs-font-size13 my-2">@time.DateTime.ToString("HH:mm")</button>
+                            }
+                        }
                     </div>
-                    @foreach(var time in date.records)
-                    {
-                        @if (time.Id != null)
-                        {
-                        <a class="my-2" href="#"><button disabled class=" bg-danger padding-5px-tb padding-15px-lr border-0 margin-10px-bottom text-white font-size16 xs-font-size13">@time.DateTime.ToString("HH:mm")</button></a>                    
-                        }
-                        else
-                        {
-                        <button type="button" data-toggle="modal" data-target="#myModal"  class="button bg-sky border-0 padding-5px-tb padding-15px-lr  margin-10px-bottom text-white font-size16 xs-font-size13 my-2" >@time.DateTime.ToString("HH:mm")</button>
-                        }
-                    }
-                        </div>
                 </div>
             </div>
-            }
- </div>       
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.button').click(function () {
-                var url = $('#myModal').data(url);
-                $.get(url, function (data) {
-                    $('#myModal').html(data);
-                    $('#myModal').modal('show');
+        }
+    </div>
+
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+        new Bootstrap4PagedListRenderOptions
+        {
+            UlElementClasses = new string[] { "pagination", "justify-content-center" },
+            LiElementClasses = new string[] { "page-item" },
+            ActiveLiElementClass = "active",
+            MaximumPageNumbersToDisplay = 5
+        }
+        )
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        var detailUrl = '/Patient/Appointment/Create';
+        $(function () {
+            $(".time-button").click(function () {
+                console.log('asd');
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: detailUrl,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "Id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        debugger;
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal(options);
+                        $('#myModal').modal('show');
+
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
                 });
             });
         });
+
     </script>
 </div>
-
-@Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
-    new Bootstrap4PagedListRenderOptions
-    {
-        UlElementClasses = new string[] { "pagination", "justify-content-center" },
-        LiElementClasses = new string[] {"page-item"},
-        ActiveLiElementClass = "active",
-        MaximumPageNumbersToDisplay = 5
-    }
-    )

@@ -27,7 +27,7 @@ namespace testing.Areas.Patient.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Create(int schedule_id)
+        public async Task<IActionResult> Create(int Id)
         {
             var patient = await _userManager.FindByNameAsync(User.Identity.Name);
             var referrals = _context.Referrals.Include(r => r.Department).Where(r => r.DeclarationId == patient.Id);
@@ -35,10 +35,20 @@ namespace testing.Areas.Patient.Controllers
 
             Appointment app = new Appointment()
             {
-                ScheduleId = schedule_id,
+                ScheduleId = Id,
                 MedcardId = patient.Id
             };
             return View("_PartialAppointment",app);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Appointment app)
+        {
+            if (ModelState.IsValid)
+            {
+                Console.WriteLine("asd");
+            }
+            return View();
         }
     }
 }
