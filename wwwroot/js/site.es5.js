@@ -3,14 +3,16 @@
 
 // Write your JavaScript code.
 
+'use strict';
 
 $(function () {
     var placeholder = $('#placeholder');
-    $('a[data-toggle="ajax=modal"]').click(function (event) {
+    $('button[data-toggle]="ajax=modal"').click(function (event) {
         var url = $(this).data('url');
-        $.get(url).done(function (data) {
+        $get(url).done(function (data) {
             placeholder.html(data);
             placeholder.find('.modal').modal('show');
-        })
-    })
-})
+        });
+    });
+});
+

@@ -12,6 +12,7 @@
 <h1>Index public</h1>
 
 <div class="container">
+    <div class="modal fade" id="myModal" data-url="@Url.Action("Create","Appointment", new { area = "Patient" })" role="dialog" ></div>
 
             <div class="row">
             <!-- CHECKBOX LIST -->
@@ -36,7 +37,7 @@
                         }
                         else
                         {
-                        <a class="my-2" href="#"><button class="button bg-sky border-0 padding-5px-tb padding-15px-lr  margin-10px-bottom text-white font-size16 xs-font-size13">@time.DateTime.ToString("HH:mm")</button></a>                    
+                        <button type="button" data-toggle="modal" data-target="#myModal"  class="button bg-sky border-0 padding-5px-tb padding-15px-lr  margin-10px-bottom text-white font-size16 xs-font-size13 my-2" >@time.DateTime.ToString("HH:mm")</button>
                         }
                     }
                         </div>
@@ -44,34 +45,17 @@
             </div>
             }
  </div>       
-</div>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">Recipient:</label>
-                        <input type="text" class="form-control" id="recipient-name">
-                    </div>
-                    <div class="form-group">
-                        <label for="message-text" class="col-form-label">Message:</label>
-                        <textarea class="form-control" id="message-text"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Send message</button>
-            </div>
-        </div>
-    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.button').click(function () {
+                var url = $('#myModal').data(url);
+                $.get(url, function (data) {
+                    $('#myModal').html(data);
+                    $('#myModal').modal('show');
+                });
+            });
+        });
+    </script>
 </div>
 
 @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
