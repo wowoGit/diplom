@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using testing.Controllers;
 using testing.Models;
+using X.PagedList;
 
 namespace testing.Areas.Admin.Controllers
 {
@@ -23,10 +24,13 @@ namespace testing.Areas.Admin.Controllers
         }
 
         // GET: Admin/Schedules
-        public override async Task<IActionResult> Index()
+        public override async Task<IActionResult> Index(int? page)
         {
+            int page_number = page ?? 1;
             var medicalContext = _context.Schedules.Include(s => s.Doctor);
-            return View(await medicalContext.ToListAsync());
+            var dates = await medicalContext.GroupBy(m => m.DateTime.Date).Select(group => new { DateTime = group.Key, row = group }).ToListAsync();
+            var dates_page = dates.ToPagedList(page_number, 2);
+            return View(dates_page);
         }
 
         // GET: Admin/Schedules/Details/5

@@ -17,7 +17,7 @@
         var doctor_fullname = history_record.Lastname +
             ' ' + history_record.Firstname +
             ' ' + history_record.Patronymic;
-        <div class="card border-primary mb-3 m-2">
+        <div class=" history_card card border-primary mb-3 m-2">
             <div class=" card-header d-flex font-weight-bold justify-content-around px-0">
                 @department
                 @if (completed)
@@ -33,7 +33,10 @@
                 <h5 class="card-title">Врач: @doctor_fullname</h5>
                 <p class="card-text">Диагноз: @diagnosis</p>
                 <p class="card-text">Дата приема: @date.ToShortDateString()</p>
+                @if (completed)
+                {
                 <a asp-action="Details"  asp-route-id="@history_record.AppointmentId" class="btn btn-primary">Подробнее...</a>
+                }
             </div>
         </div>
     }

@@ -329,6 +329,8 @@ namespace testing.Models
                 entity.ToTable("freeappointmentsweek");
 
                 entity.Property(e => e.Cabinet).HasColumnName("cabinet");
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.ScheduleId).HasColumnName("schedule_id");
 
                 entity.Property(e => e.DateTime).HasColumnName("date_time");
 

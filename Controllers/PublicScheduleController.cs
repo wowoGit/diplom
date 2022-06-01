@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using testing.Models;
+using X.PagedList;
 
 namespace testing.Controllers
 {
@@ -19,10 +20,20 @@ namespace testing.Controllers
         }
 
         // GET: Schedule
-        virtual public async Task<IActionResult> Index()
+        virtual public async Task<IActionResult> Index(int? page)
         {
-            var medicalContext = _context.Schedules.Include(s => s.Doctor);
-            return View(await medicalContext.ToListAsync());
+            int page_number = page ?? 1;
+            var dt =await _context.Freeappointmentsweeks.Select(r => r.DateTime.Date).Distinct().OrderBy(r => r.Date).ToListAsync();
+            var model = new List<DaySchedule>();
+            foreach(var date in dt)
+            {
+            var records = _context.Freeappointmentsweeks.Where(r => r.DateTime.Date == date).ToList();
+                model.Add(new DaySchedule { Date = date, records = records });
+            }
+            //var doc_schedule = _context.Freeappointmentsweeks.Select(r => r.DateTime.Date).Distinct()
+            //    .Select(key => new DaySchedule{ Date = key, records = _context.Freeappointmentsweeks.Where(r => r.DateTime.Date == key).ToList() });
+            var dates_page = model.ToPagedList(page_number, 2);
+            return View(dates_page);
         }
 
         // GET: Schedule/Details/5
