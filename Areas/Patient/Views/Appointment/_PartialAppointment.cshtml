@@ -1,36 +1,103 @@
 ﻿@model testing.Models.Appointment
 @{ 
     Layout = null;
+    var doctor = Model.Schedule.Doctor.Lastname + ' '
+                + Model.Schedule.Doctor.Firstname + ' '
+                + Model.Schedule.Doctor.Patronymic;
+    var doc_fname = Model.Schedule.Doctor.Firstname;
+    var doc_lname = Model.Schedule.Doctor.Lastname;
+    var doc_patro = Model.Schedule.Doctor.Patronymic;
+    var date_time = @Model.Schedule.DateTime.ToString("dd/MM/yy HH:mm");
+    var doc = (Doctor)ViewData["doc"];
+    var referral = (Activereferral)ViewData["HasReferral"];
+    var a = 1;
+    var price = doc.Department.Price;
 }
 
-    <div class=" row m-auto">
-
-        <div class="col-sm-6">
-            <div class="modal-dialog">
+    <script src="https://kit.fontawesome.com/1a4d651aec.js" crossorigin="anonymous"></script>
+    <div class=" row">
+            <div class="modal-dialog w-50">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="myModalLabel">New message</h5>
+                        <h5 class="modal-title" id="myModalLabel">Запись на прием</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <form asp-action="Create">
-                            <div class="form-group">
-                                <label asp-for="Info" class="col-form-label">Recipient:</label>
-                                <input asp-for="Info" type="text" class="form-control" id="recipient-name">
+                            @Html.HiddenFor(m => m.ReferralId, new { id = "ref_hidden" })
+                            @Html.HiddenFor(m => m.MedcardId, new { Value = Model.MedcardId })
+                            @Html.HiddenFor(m => m.ScheduleId, new { Value = Model.ScheduleId })
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <p class="w-100">Врач: @doc_lname @doc_fname @doc_patro</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                             <label asp-for="ReferralId" class="control-label"></label>
-                             <select asp-for="ReferralId" asp-items="ViewBag.Referrals" class="form-control"  >
-                                 <option disabled selected>Выбрать...</option>
-                             </select>                
-                    <span asp-validation-for="ReferralId" class="text-danger"></span>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <p class="w-100">Дата/Время приема: @date_time</p>
+                                    </div>
+                                </div>
                             </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <input type="submit" class="btn btn-primary"/>
-                    </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <span class="w-100">Стоимость приема: </span><span id="price">@doc.Department.Price</span><span> грн. </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label asp-for="Info" class="control-label"></label>
+                                        <textarea asp-for="Info" type="text" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="row">
+           <div class="col">
+             <div class="form-group">
+                 <input disabled type="text" class="form-control" value="@doc_fname">
+             </div>
+           </div>
+           <div class="col">
+        <div class="form-group">
+            <input disabled type="text" class="form-control" value="@doc_lname">
+        </div>
+        </div>
+           <div class="col">
+        <div class="form-group">
+            <input disabled type="text" class="form-control" value="@doc_patro">
+        </div>
+        </div>
+        </div>*@
+                            <div class="row">
+                                <div class="col">
+                                    <label class="control-label">Доступные направления</label>
+                                    <i class="fa-regular fa-circle-question fa-fw" data-toggle="tooltip" data-placement="right" title="При использовании направления прием осуществляется бесплатно"></i>
+                                    @if (referral != null)
+                                    {
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="check">
+                                            <label class="form-check-label" for="check">Использовать направление (действительно до @referral.IssuedDate.ToString("dd/MM/yy"))</label>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="form-group">
+                                            <p class="text-muted">Доступных направлений нет.</p>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                <input type="submit" class="btn btn-primary" value="Записаться" />
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -38,7 +105,26 @@
         </div>
 
 
-
-    </div>
 </div>
 
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+<script type="text/javascript">
+    const checkbox = document.getElementById('check');
+    const ref = document.getElementById('ref_hidden');
+    const price = document.getElementById('price');
+    checkbox.addEventListener('change', (event) => {
+        if (event.currentTarget.checked) {
+            ref.value = @referral?.Id;
+            price.innerHTML = '0';
+            price.classList.add('text-success');
+        } else {
+            ref.value = null;
+            price.innerHTML = @price;
+            price.classList.remove('text-success');
+        }
+    });
+    </script>

@@ -19,5 +19,7 @@ namespace testing.Models
         public int? Id { get; set; }
         [Column("schedule_id")]
         public int ScheduleId { get; set; }
+        [Column("doctor_id")]
+        public string DoctorId { get; set; }
     }
 }

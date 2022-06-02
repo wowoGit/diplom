@@ -9,10 +9,19 @@
 @using X.PagedList.Mvc.Core;
 @using X.PagedList.Mvc.Bootstrap4.Core;
 @using X.PagedList;
+@if (TempData["AppSet"] != null)
+{
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+}
 <h1>Index public</h1>
 
-<div class="container m-auto">
-    <div class="modal fade m-auto" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<script src="https://kit.fontawesome.com/1a4d651aec.js" crossorigin="anonymous"></script><div class="container">
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div id="myModalContent"></div>
     </div>
 
@@ -21,25 +30,24 @@
         @foreach (var date in Model)
         {
 
-            <div class="col schedule my-4 ">
+            <div class="col schedule my-4 w-50 mw-50">
                 <div class="bg-light-gray h-100 card rounded border-1 shadow-sm position-relative">
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-4 pb-4 border-bottom border-dark">
-                            <i class="far fa-calendar-alt fa-3x"></i>
-                            <div class="ms-3">
+                            <i class="fa-regular fa-calendar fa-3x"></i>
+                            <div class="ms-3 ml-1">
                                 <h4 class="text-uppercase fw-weight-bold mb-0">@date.Date.DayOfWeek</h4>
-                                <p class="text-gray fst-italic mb-0">@date.Date.ToLongDateString()</p>
+                                <p class="text-gray fst-italic mb-0 ml-1">@date.Date.ToLongDateString()</p>
                             </div>
                         </div>
                         @foreach (var time in date.records)
                         {
                             @if (time.Id != null)
                             {
-                                <a class="my-2" href="#"><button disabled class=" bg-danger padding-5px-tb padding-15px-lr border-0 margin-10px-bottom text-white font-size16 xs-font-size13">@time.DateTime.ToString("HH:mm")</button></a>
                             }
                             else
                             {
-                                <button type="button" data-id="@time.ScheduleId" class="time-button button bg-sky border-0 padding-5px-tb padding-15px-lr  margin-10px-bottom text-white font-size16 xs-font-size13 my-2">@time.DateTime.ToString("HH:mm")</button>
+                                <button type="button" data-id="@time.ScheduleId" doctor-id="@time.DoctorId" class="time-button button bg-sky border-0 padding-5px-tb padding-15px-lr  margin-10px-bottom text-white font-size16 xs-font-size13 my-2">@time.DateTime.ToString("HH:mm")</button>
                             }
                         }
                     </div>
@@ -60,21 +68,22 @@
     <script src="/lib/jquery/dist/jquery.min.js"></script>
     <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        $('.alert').alert();
         var detailUrl = '/Patient/Appointment/Create';
         $(function () {
             $(".time-button").click(function () {
                 console.log('asd');
                 var $buttonClicked = $(this);
                 var id = $buttonClicked.attr('data-id');
+                var doc_id = $buttonClicked.attr('doctor-id');
                 var options = { "backdrop": "static", keyboard: true };
                 $.ajax({
                     type: "GET",
                     url: detailUrl,
                     contentType: "application/json; charset=utf-8",
-                    data: { "Id": id },
+                    data: { "ScheduleId": id, "DoctorId": doc_id },
                     datatype: "json",
                     success: function (data) {
-                        debugger;
                         $('#myModalContent').html(data);
                         $('#myModal').modal(options);
                         $('#myModal').modal('show');

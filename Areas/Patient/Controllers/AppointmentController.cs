@@ -27,17 +27,21 @@ namespace testing.Areas.Patient.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Create(int Id)
+        public async Task<IActionResult> Create(int ScheduleId,string DoctorId)
         {
             var patient = await _userManager.FindByNameAsync(User.Identity.Name);
-            var referrals = _context.Referrals.Include(r => r.Department).Where(r => r.DeclarationId == patient.Id);
-            ViewData["Referrals"] = new SelectList(referrals, "Id", "Department.Name");
-
+            //ViewData["Referrals"] = new SelectList(referrals, "Id", "Department.Name");
+            ViewData["app_time"] = _context.Schedules.Where(m => m.Id == ScheduleId);
+            var doc = _context.Doctors.Include(d => d.Department).Where(d => d.UserId == DoctorId).First();
+            var doc_dep = doc.DepartmentId;
+            ViewData["doc"] = doc;
+            ViewData["HasReferral"] = _context.Activereferrals.Where(e => e.DeclarationId == patient.Id && doc_dep == e.DepartmentId).FirstOrDefault();
             Appointment app = new Appointment()
             {
-                ScheduleId = Id,
-                MedcardId = patient.Id
+                ScheduleId = ScheduleId,
+                MedcardId = patient.Id,
             };
+            app.Schedule = _context.Schedules.Include(d => d.Doctor).Where(m => m.Id == ScheduleId).FirstOrDefault();
             return View("_PartialAppointment",app);
         }
 
@@ -46,9 +50,11 @@ namespace testing.Areas.Patient.Controllers
         {
             if (ModelState.IsValid)
             {
-                Console.WriteLine("asd");
+                _context.Appointments.Add(app);
+                await _context.SaveChangesAsync();
+                TempData["AppSet"] = true;
             }
-            return View();
+            return RedirectToAction("Index","PublicSchedule", new { area= "" });
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -10,6 +11,7 @@ namespace testing.Models
         public int Id { get; set; }
         public string MedcardId { get; set; }
         public int ScheduleId { get; set; }
+        [Display(Name ="Жалоба")]
         public string Info { get; set; }
         public int? ReferralId { get; set; }
 

@@ -97,6 +97,10 @@ body {
     background-color: #f7f7f7;
 }
 
+.inactive {
+    background-color: #626262;
+}
+
 .table-bordered thead td, .table-bordered thead th {
     border-bottom-width: 2px;
 }
@@ -244,4 +248,11 @@ label {
 
 a {
     text-decoration: none;
+}
+
+.schedule {
+    max-width:50%;
+}
+#check:checked + .form-check-label {
+    text-decoration: none!important;
 }

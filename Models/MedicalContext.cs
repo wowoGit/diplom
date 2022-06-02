@@ -19,6 +19,7 @@ namespace testing.Models
         public virtual DbSet<Appointment> Appointments { get; set; }
         public virtual DbSet<Completedmeeting> Completedmeetings { get; set; }
         public virtual DbSet<Allmeeting> Allmeetings { get; set; }
+        public virtual DbSet<Activereferral> Activereferrals { get; set; }
         public virtual DbSet<Declaration> Declarations { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Doctor> Doctors { get; set; }
@@ -321,6 +322,20 @@ namespace testing.Models
 
                 entity.Property(e => e.TotalPatients).HasColumnName("total patients");
             });
+            modelBuilder.Entity<Activereferral>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("activereferrals");
+
+                entity.Property(e => e.DeclarationId).HasColumnName("declaration_id");
+                entity.Property(e => e.Name).HasColumnName("name");
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.DepartmentId).HasColumnName("department_id");
+                entity.Property(e => e.IssuedDate).HasColumnName("issued_date");
+
+            });
+
 
             modelBuilder.Entity<Freeappointmentsweek>(entity =>
             {
@@ -331,6 +346,7 @@ namespace testing.Models
                 entity.Property(e => e.Cabinet).HasColumnName("cabinet");
                 entity.Property(e => e.Id).HasColumnName("id");
                 entity.Property(e => e.ScheduleId).HasColumnName("schedule_id");
+                entity.Property(e => e.DoctorId).HasColumnName("doctor_id");
 
                 entity.Property(e => e.DateTime).HasColumnName("date_time");
 
