@@ -1,6 +1,8 @@
-﻿@model testing.Models.MedcardVM 
+﻿@using testing.Areas.Patient.Views.Shared
+@model testing.Models.MedcardVM 
 @{
     ViewData["Title"] = "Index";
+    ViewData["ActivePage"] = ManageNavPages.Medcard;
 }
 
 <h2 class="text-center mb-lg-5">Общая информация</h2>

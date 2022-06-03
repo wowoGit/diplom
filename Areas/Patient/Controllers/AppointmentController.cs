@@ -50,9 +50,18 @@ namespace testing.Areas.Patient.Controllers
         {
             if (ModelState.IsValid)
             {
+                TempData["AppInfo"] = true;
+                try
+                {
                 _context.Appointments.Add(app);
                 await _context.SaveChangesAsync();
-                TempData["AppSet"] = true;
+                TempData["Message"] = "Прием успешно зарегистрирован!"; 
+                TempData["Success"] = true; 
+                }
+                catch(Exception e)
+                {
+                    TempData["Message"] = e.InnerException?.Message;
+                }
             }
             return RedirectToAction("Index","PublicSchedule", new { area= "" });
         }

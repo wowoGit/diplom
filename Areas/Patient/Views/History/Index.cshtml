@@ -1,10 +1,12 @@
 ﻿@model IPagedList<testing.Models.Allmeeting>
 @{
     ViewData["Title"] = "Index";
+    ViewData["ActivePage"] = ManageNavPages.History;
 }
 @using X.PagedList.Mvc.Core;
 @using X.PagedList.Mvc.Bootstrap4.Core;
 @using X.PagedList;
+@using testing.Areas.Patient.Views.Shared
 
 <h2 class="text-center mb-lg-5">Ваши посещения</h2>
 <div class="d-flex justify-content-center">
@@ -22,17 +24,24 @@
                 @department
                 @if (completed)
                 {
-                        <span class="badge badge-success">Завершен</span>
+                    <span class="badge badge-success">Завершен</span>
                 }
                 else
                 {
+                    if (history_record.Appdate < DateTime.Now)
+                    {
                         <span class="badge badge-danger">Пропущен</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-warning">Ожидается</span>
+                    }
                 }
                     </div>
             <div class="card-body text-dark">
                 <h5 class="card-title">Врач: @doctor_fullname</h5>
                 <p class="card-text">Диагноз: @diagnosis</p>
-                <p class="card-text">Дата приема: @date.ToShortDateString()</p>
+                <p class="card-text">Дата: @date.ToString("dd/MM/yy HH:mm")</p>
                 @if (completed)
                 {
                 <a asp-action="Details"  asp-route-id="@history_record.AppointmentId" class="btn btn-primary">Подробнее...</a>

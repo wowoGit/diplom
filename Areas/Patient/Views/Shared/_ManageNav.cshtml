@@ -1,15 +1,9 @@
-﻿@inject SignInManager<IdentityUser> SignInManager
+﻿@using testing.Areas.Patient.Views.Shared
+@inject SignInManager<IdentityUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
 <ul class="nav nav-pills flex-column">
-    <li class="nav-item"><a class="nav-link active" asp-area="Patient" asp-controller="Medcard" asp-action="Index" >IndexHome</a></li>
-    <li class="nav-item"><a class="nav-link" asp-area="Patient" asp-controller="History" asp-action="Index" >History</a></li>
-    <li class="nav-item"><a class="nav-link" id="change-password" >Password</a></li>
-    @if (hasExternalLogins)
-    {
-        <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link" >External logins</a></li>
-    }
-    <li class="nav-item"><a class="nav-link" id="two-factor" >Two-factor authentication</a></li>
-    <li class="nav-item"><a class="nav-link" id="personal-data" >Personal data</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.MedcardNavClass(ViewContext)" asp-area="Patient" asp-controller="Medcard" asp-action="Index" >Общая информация</a></li>
+   <li class="nav-item"><a class="nav-link @ManageNavPages.HistoryNav(ViewContext)" asp-area="Patient" asp-controller="History" asp-action="Index" >История посещений</a></li>
 </ul>
