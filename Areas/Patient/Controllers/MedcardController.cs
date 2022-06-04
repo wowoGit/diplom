@@ -12,14 +12,13 @@ using testing.ViewModels;
 namespace testing.Areas.Patient.Controllers
 {
     [Area("Patient")]
-    public class MedcardController : Controller
+    public class MedcardController : BaseController
     {
-        private readonly MedicalContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public MedcardController(MedicalContext context, UserManager<IdentityUser> userManager)
+        public MedcardController(IConfiguration configuration, UserManager<IdentityUser> userManager)
+            :base(configuration.GetConnectionString("PatientConnection"))
         {
-            _context = context;
             _userManager = userManager;
         }
 

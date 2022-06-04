@@ -11,12 +11,12 @@ using testing.Models;
 namespace testing.Areas.Patient.Controllers
 {
     [Area("Patient")]
-    public class AppointmentController : Controller
+    public class AppointmentController : BaseController
     {
-        private readonly MedicalContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public AppointmentController(MedicalContext context, UserManager<IdentityUser> userManager)
+        public AppointmentController(IConfiguration configuration, UserManager<IdentityUser> userManager):
+            base(configuration.GetConnectionString("PatientConnection"))
         {
             _context = context;
             _userManager = userManager;

@@ -11,13 +11,12 @@ using X.PagedList;
 namespace testing.Areas.Patient.Controllers
 {
     [Area("Patient")]
-    public class HistoryController : Controller
+    public class HistoryController : BaseController
     {
-        public readonly MedicalContext _context;
         public readonly UserManager<IdentityUser> _userManager;
-        public HistoryController(MedicalContext context,UserManager<IdentityUser> userManager)
+        public HistoryController(IConfiguration configuration, UserManager<IdentityUser> userManager)
+            : base(configuration.GetConnectionString("PatientConnection"))
         {
-            _context = context;
             _userManager = userManager;
         }
         public async Task<IActionResult> Index(int? page)
