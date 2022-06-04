@@ -1,16 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using testing.Models;
 
 namespace testing.Controllers
 {
-    public class BaseController : Controller
+    public abstract class BaseController : Controller
     {
-        public IActionResult Index()
+        protected readonly MedicalContext _context;
+
+        public BaseController(string connectionString)
         {
-            return View();
+            var optionsBuilder = new DbContextOptionsBuilder<MedicalContext>();
+            var options = optionsBuilder.UseNpgsql(connectionString).Options;
+            _context = new MedicalContext(options);
         }
     }
 }

@@ -5,18 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using testing.Models;
 using X.PagedList;
 
 namespace testing.Controllers
 {
-    public class PublicScheduleController : Controller
+    public class PublicScheduleController : BaseController
     {
-        private readonly MedicalContext _context;
 
-        public PublicScheduleController(MedicalContext context)
+        public PublicScheduleController(IConfiguration configuration):
+            base(configuration.GetConnectionString("DefaultConnection"))
         {
-            _context = context;
         }
 
         // GET: Schedule
