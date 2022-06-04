@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using testing.Models;
 using testing.Services;
+using X.PagedList;
 
 namespace testing.Areas.Admin.Controllers
 {
@@ -23,10 +24,14 @@ namespace testing.Areas.Admin.Controllers
 
         // GET: Admin/Doctor
         [Route("Public/Doctors")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int? dep)
         {
-            var medicalContext = _context.Doctors.Include(d => d.Department).Include(d => d.Role);
-            return View(await medicalContext.ToListAsync());
+            int page_number = page ?? 1;
+            int dep_id = dep ?? 1;
+            var doctors = _context.Doctors.Include(d => d.Department).Include(d => d.Role).Include(d=> d.Schedules).Where(d => d.DepartmentId == dep_id);
+            ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Name",dep_id);
+            var doctors_page = doctors.ToPagedList(page_number, 5);
+            return View(doctors_page);
         }
 
         // GET: Admin/Doctor/Details/5

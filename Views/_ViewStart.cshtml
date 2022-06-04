@@ -4,6 +4,10 @@
     {
         Layout = "/Areas/Patient/Views/Shared/_Layout.cshtml";
     }
+    else if (this.User.IsInRole("Admin"))
+    {
+        Layout = "/Areas/Admin/Views/Shared/_Layout.cshtml";
+    }
     else
     {
         Layout = "~/Views/Shared/_Layout.cshtml";

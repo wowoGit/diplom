@@ -1,78 +1,119 @@
-﻿@model IEnumerable<testing.Models.Doctor>
+﻿@model IPagedList<testing.Models.Doctor>
 
 @{
     ViewData["Title"] = "Index";
 }
 
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Bootstrap4.Core;
+@using X.PagedList;
+@using testing.Extensions;
+@using System.Reflection; 
 <h1 class="text-center mb-lg-5">Медицинский персонал</h1>
 
-<div class="row m-auto justify-content-between">
-<input class="form-control col-4 mb-4" type="text" id="search_fname_doctor" onkeyup="myFunction(this.id, d_table.id)" placeholder="Поиск...">
-<a asp-area="Admin" asp-action="Create"><button type="button" class="btn btn-primary">Создать</button></a></div>
-<table class="table" id="d_table">
-    <thead>
-        <tr>
-            <th>
-                #
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Firstname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lastname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Patronymic)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateOfBirth)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Department)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cabinet)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Role)
-            </th>
-            <th>Управление</th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var (item,i) in Model.Select((value,i)=>(value,i+1))) {
-        <tr>
-            <td>
-                @i
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Firstname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lastname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Patronymic)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfBirth)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Department.Name)
-            </td>
-            <td class="text-center">
-                @Html.DisplayFor(modelItem => item.Cabinet)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Role.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.UserId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.UserId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.UserId">Delete</a>
-            </td>
-        </tr>
-}
-        <script src="~/js/page_search.js"></script>
-    </tbody>
-</table>
+<div class="row m-auto justify-content-between px-3">
+    <input class="form-control col-4" type="text" id="search_fname_doctor" onkeyup="myFunction(this.id, d_table.id)" placeholder="Поиск...">
+    <a asp-area="Admin" asp-action="Create"><button type="button" class="btn btn-primary">Создать</button></a>
+</div>
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ФИО Врача</th>
+                <th>Статус</th>
+                <th>Кабинет</th>
+                <th>
+                <select id="dep_select" asp-items="ViewBag.DepartmentId" class="custom-select"  >
+                </select>                
+                    </th>
+                <th>Пол</th>
+                <th>Расписание</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var doc_info in Model) {
+                var doc_name = doc_info.Firstname + ' ' + doc_info.Patronymic;
+                var age = DateTime.Now.Year - doc_info.DateOfBirth.Year;
+                var available = doc_info.Schedules.Where(s => s.DateTime > DateTime.Today).FirstOrDefault();
+                var gender = doc_info.Gender.GetDisplayAttribute();
+
+            <tr>
+                <td>
+                    <div class="user-info">
+                        <div class="user-info__img">
+                            <img src="~/img/user1.jpg" alt="User Img">
+                        </div>
+                        <div class="user-info__basic">
+                            <h5 class="mb-0">@doc_info.Lastname</h5>
+                            <h5 class="mb-0">@doc_name</h5>
+                            <p class="text-muted mb-0">@age лет, @doc_info.Role.Name.ToLower()</p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    @if(available != null)
+                {
+                    <span class="btn btn-success">Принимает</span>
+                }
+                    else
+                {
+                    <span class="btn btn-danger">Не Принимает</span>
+                }
+                </td>
+                <td>
+                    <h6 class="mb-0">@doc_info.Department.Floor-й этаж</h6>
+                    <small>@doc_info.Cabinet кабинет</small>
+                </td>
+                <td>
+                    <h6 class="mb-0">@doc_info.Department.Name</h6>
+                    <small>Стаж - @doc_info.Experience лет</small>
+                </td>
+                <td>
+                    <h6 class="mb-0">@gender.Name</h6>
+                </td>
+                <td>
+                    @if(available != null)
+                {
+                    <a href="@Url.Action("Index","PublicSchedule",new { area = "", userId = doc_info.UserId})"><i class="fa-regular fa-clock green-color fa-2x text-success"></i></a>
+                }
+                    else
+                {
+                    <a href="@Url.Action("Index","PublicSchedule",new { area = "", userId = doc_info.UserId})"><i class="fa-regular fa-circle-xmark fa-2x text-danger"></i></a>
+                }
+                    @*<div class="dropdown open">
+            <a href="#!" class="px-2" id="triggerId1" data-toggle="dropdown" aria-haspopup="true"
+               aria-expanded="false">
+                <i class="fa fa-ellipsis-v"></i>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="triggerId1">
+                <a class="dropdown-item" href="#"><i class="fa fa-pencil mr-1"></i> Edit</a>
+                <a class="dropdown-item text-danger" href="#"><i class="fa fa-trash mr-1"></i> Delete</a>
+            </div>
+        </div>*@
+                </td>
+            </tr>
+            }
+            
+        </tbody>
+    </table>
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+    new Bootstrap4PagedListRenderOptions
+    {
+        UlElementClasses = new string[] { "pagination", "justify-content-center" },
+        LiElementClasses = new string[] {"page-item"},
+        ActiveLiElementClass = "active",
+        MaximumPageNumbersToDisplay = 5
+    }
+    )
+
+</div>
+<script src="~/js/page_search.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#dep_select').change(function () {
+            var loc = window.location.href;
+            window.location.href = loc.substring(0, loc.indexOf('?')) + '?dep=' + $(this).val();
+        });
+    });
+</script>

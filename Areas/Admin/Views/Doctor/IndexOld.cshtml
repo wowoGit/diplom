@@ -1,0 +1,78 @@
+﻿@model IEnumerable<testing.Models.Doctor>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="text-center mb-lg-5">Медицинский персонал</h1>
+
+<div class="row m-auto justify-content-between">
+<input class="form-control col-4 mb-4" type="text" id="search_fname_doctor" onkeyup="myFunction(this.id, d_table.id)" placeholder="Поиск...">
+<a asp-area="Admin" asp-action="Create"><button type="button" class="btn btn-primary">Создать</button></a></div>
+<table class="table" id="d_table">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Firstname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lastname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Patronymic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfBirth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Department)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cabinet)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Role)
+            </th>
+            <th>Управление</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var (item,i) in Model.Select((value,i)=>(value,i+1))) {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Firstname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lastname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patronymic)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfBirth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Department.Name)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Cabinet)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.UserId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.UserId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.UserId">Delete</a>
+            </td>
+        </tr>
+}
+        <script src="~/js/page_search.js"></script>
+    </tbody>
+</table>

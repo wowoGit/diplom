@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -24,7 +25,7 @@ namespace testing.Areas.Admin.Controllers
         }
 
         // GET: Admin/Schedules
-        public override async Task<IActionResult> Index(int? page)
+        public override async Task<IActionResult> Index(string userId,int? page)
         {
             int page_number = page ?? 1;
             var medicalContext = _context.Schedules.Include(s => s.Doctor);

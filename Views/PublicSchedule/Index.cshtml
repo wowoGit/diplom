@@ -3,29 +3,62 @@
 @{
     ViewData["Title"] = "Index";
 
+    var dateinfo = DateTimeFormatInfo.CurrentInfo;
+    var doc_rec = ViewData["Doctor"] as Doctor;
+    var doc_name = @doc_rec.Lastname + ' ' + @doc_rec.Firstname + ' ' + @doc_rec.Patronymic;
+
 
 }
 
 @using X.PagedList.Mvc.Core;
 @using X.PagedList.Mvc.Bootstrap4.Core;
 @using X.PagedList;
+@using System.Globalization;
 @if (TempData["AppInfo"] != null)
 {
     var alertType = TempData.ContainsKey("Success") ? "success" : "danger";
     <div class="alert alert-@alertType alert-dismissible fade show" role="alert">
-    @TempData["Message"]
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+        @TempData["Message"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 }
-<h1>Index public</h1>
-
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent mx-3">
+        <li class="breadcrumb-item"><a href="#">Главная</a></li>
+        <li class="breadcrumb-item"><a href="#">Врачи</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@doc_name</li>
+    </ol>
+</nav>
 <script src="https://kit.fontawesome.com/1a4d651aec.js" crossorigin="anonymous"></script><div class="container">
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div id="myModalContent"></div>
     </div>
-
+    <div class="row">
+        <div class="col-sm-3 justify-content-center">
+            <div class="container">
+                <img class="card-img" src="~/img/img3.jpg" id="profile-img" />
+            </div>
+        </div>
+        <div class="col ml-4 mt-4">
+            <div class="row">
+                <h5 class="text-muted">@doc_rec.Role.Name</h5>
+            </div>
+            <div class="row">
+                <h5>@doc_name</h5>
+            </div>
+            <div class="row mt-4">
+                <h6 class="text-muted">Отделение:&nbsp; </h6><h6> @doc_rec.Department.Name</h6>
+            </div>
+            <div class="row">
+                <h6 class="text-muted">Стаж работы:&nbsp; </h6><h6> @doc_rec.Experience лет</h6>
+            </div>
+        </div>
+        <div class="col">
+            <div class="row m-4"><h6 class="text-muted">Краткая биография:</h6><h6 class="text-justify">@doc_rec.About</h6></div>
+        </div>
+    </div>
     <div class="row">
         <!-- CHECKBOX LIST -->
         @foreach (var date in Model)
@@ -37,7 +70,7 @@
                         <div class="d-flex align-items-center mb-4 pb-4 border-bottom border-dark">
                             <i class="fa-regular fa-calendar fa-3x"></i>
                             <div class="ms-3 ml-1">
-                                <h4 class="text-uppercase fw-weight-bold mb-0">@date.Date.DayOfWeek</h4>
+                                <h4 class="text-uppercase fw-weight-bold mb-0">@dateinfo.GetDayName(date.Date.DayOfWeek)</h4>
                                 <p class="text-gray fst-italic mb-0 ml-1">@date.Date.ToLongDateString()</p>
                             </div>
                         </div>
@@ -57,7 +90,7 @@
         }
     </div>
 
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page, userId = ViewData["UserId"] }),
         new Bootstrap4PagedListRenderOptions
         {
             UlElementClasses = new string[] { "pagination", "justify-content-center" },

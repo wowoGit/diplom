@@ -3,7 +3,7 @@
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
-<ul class="nav nav-pills flex-column">
+<ul class="nav nav-pills flex-column mt-lg-5">
     <li class="nav-item"><a class="nav-link @ManageNavPages.MedcardNavClass(ViewContext)" asp-area="Patient" asp-controller="Medcard" asp-action="Index" >Общая информация</a></li>
    <li class="nav-item"><a class="nav-link @ManageNavPages.HistoryNav(ViewContext)" asp-area="Patient" asp-controller="History" asp-action="Index" >История посещений</a></li>
 </ul>

@@ -48,6 +48,7 @@ namespace testing.Areas.Patient.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Appointment app)
         {
+            string docId = _context.Schedules.Where(s => s.Id == app.ScheduleId).Select(s => s.DoctorId).First();
             if (ModelState.IsValid)
             {
                 TempData["AppInfo"] = true;
@@ -63,7 +64,7 @@ namespace testing.Areas.Patient.Controllers
                     TempData["Message"] = e.InnerException?.Message;
                 }
             }
-            return RedirectToAction("Index","PublicSchedule", new { area= "" });
+            return RedirectToAction("Index","PublicSchedule", new { area= "",userId = docId });
         }
     }
 }

@@ -20,10 +20,12 @@ namespace testing.Controllers
         }
 
         // GET: Schedule
-        virtual public async Task<IActionResult> Index(int? page)
+        virtual public async Task<IActionResult> Index(string userId, int? page)
         {
             int page_number = page ?? 1;
-            var dt =await _context.Freeappointmentsweeks.Select(r => r.DateTime.Date).Distinct().OrderBy(r => r.Date).ToListAsync();
+            ViewData["UserId"] = userId;
+            ViewData["Doctor"] = _context.Doctors.Include(d=>d.Department).Include(d=> d.Role).Where(d => d.UserId == userId).First();
+            var dt = await _context.Freeappointmentsweeks.Where(d => d.DoctorId == userId).Select(r => r.DateTime.Date).Distinct().OrderBy(r => r.Date).ToListAsync();
             var model = new List<DaySchedule>();
             foreach(var date in dt)
             {
