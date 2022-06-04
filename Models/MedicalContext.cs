@@ -44,10 +44,6 @@ namespace testing.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseNpgsql(conn);
-            }
             NpgsqlConnection.GlobalTypeMapper.MapEnum<Gender>("gender");
             NpgsqlConnection.GlobalTypeMapper.MapEnum<BloodType>("public.bloodtype");
         }

@@ -38,6 +38,7 @@ namespace testing
             services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores <MedicalContext>();
             services.AddControllersWithViews();
+            services.AddSingleton(provider => Configuration);
             services.Configure<IdentityOptions>(options =>
             {
                 // Default Password settings.

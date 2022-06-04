@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Npgsql;
 using NpgsqlTypes;
 using testing.Models;
@@ -15,25 +16,25 @@ namespace testing.Controllers
 {
     [Area("Manager")]
     //[Authorize(Roles = "Manager")]
-    public class PatientController : Controller
+    public class PatientController : BaseController
     {
-        private readonly MedicalContext _context;
         private UserManager<IdentityUser> _userManager;
         private SignInManager<IdentityUser> _signInManager;
         private RoleManager<IdentityRole> _roleManager;
-        private string connectionString =
-            "host=localhost;database=popmedical_test;username=postgres;password=postgres;";
+        string connectionString;
 
-        public PatientController(MedicalContext Context,
+        public PatientController(IConfiguration configuration,
             RoleManager<IdentityRole> roleManager, 
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager)
+            :base(configuration.GetConnectionString("ManagerConnection"))
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
-            _context = Context;
+            connectionString = configuration.GetConnectionString("ManagerConnection");
         }
+
 
         // GET: Manager
         public async Task<IActionResult> Index()

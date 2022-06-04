@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using testing.Controllers;
 using testing.Models;
 using testing.Services;
 using X.PagedList;
@@ -13,13 +15,12 @@ using X.PagedList;
 namespace testing.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class DoctorController : Controller
+    public class DoctorController : BaseController
     {
-        private readonly MedicalContext _context;
 
-        public DoctorController(MedicalContext context)
+        public DoctorController(IConfiguration configuration):
+            base(configuration.GetConnectionString("AdminConnection"))
         {
-            _context = context;
         }
 
         // GET: Admin/Doctor

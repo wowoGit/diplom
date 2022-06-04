@@ -6,19 +6,20 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using testing.Controllers;
 using testing.Models;
 
 namespace testing.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class ManagerController : Controller
+    public class ManagerController : BaseController
     {
-        private readonly MedicalContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public ManagerController(MedicalContext context, UserManager<IdentityUser> userManager)
+        public ManagerController(IConfiguration configuration, UserManager<IdentityUser> userManager)
+            :base(configuration.GetConnectionString("AdminController"))
         {
-            _context = context;
             _userManager = userManager;
         }
 

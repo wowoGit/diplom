@@ -5,18 +5,19 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using testing.Controllers;
 using testing.Models;
 
 namespace testing.Areas.Manager.Controllers
 {
     [Area("Manager")]
-    public class DeclarationController : Controller
+    public class DeclarationController : BaseController
     {
-        private readonly MedicalContext _context;
 
-        public DeclarationController(MedicalContext context)
+        public DeclarationController(IConfiguration configuration, MedicalContext context)
+            :base(configuration.GetConnectionString("ManagerConnection"))
         {
-            _context = context;
         }
 
         // GET: Manager/Declaration

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using testing.Controllers;
 using testing.Models;
 using X.PagedList;
@@ -17,11 +18,9 @@ namespace testing.Areas.Admin.Controllers
     [Authorize]
     public class ScheduleController : PublicScheduleController 
     {
-        private readonly MedicalContext _context;
 
-        public ScheduleController(MedicalContext context): base(context)
+        public ScheduleController(IConfiguration configuration): base(configuration)
         {
-            _context = context;
         }
 
         // GET: Admin/Schedules

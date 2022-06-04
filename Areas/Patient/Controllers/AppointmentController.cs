@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using testing.Controllers;
 using testing.Models;
 
 namespace testing.Areas.Patient.Controllers
@@ -18,7 +19,6 @@ namespace testing.Areas.Patient.Controllers
         public AppointmentController(IConfiguration configuration, UserManager<IdentityUser> userManager):
             base(configuration.GetConnectionString("PatientConnection"))
         {
-            _context = context;
             _userManager = userManager;
         }
         public IActionResult Index()
