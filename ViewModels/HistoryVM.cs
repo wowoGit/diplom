@@ -12,8 +12,8 @@ namespace testing.ViewModels
         }
         public string Diagnosis { get; set; }
         public int appointmentId { get; set; }
-        public List<Historydocument>? HDocuments {get;set;}
-        public List<Historymedication>? HMedications {get;set;}
-        public List<Historyprocedure>? HProcedures {get;set;}
+        public List<Historydocument> HDocuments {get;set;}
+        public List<Historymedication> HMedications {get;set;}
+        public List<Historyprocedure> HProcedures {get;set;}
     }
 }
