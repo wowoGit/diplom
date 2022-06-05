@@ -24,10 +24,13 @@
                     <ul class="navbar-nav flex-grow-1">
 
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Manager" asp-controller="Patient" asp-action="Index">Пациенты</a>
+                            <a class="nav-link text-dark" asp-area="Doctor" asp-controller="Appointment" asp-action="Index">Приемы</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="BaseDoctor" asp-action="Index">Приемы врачей</a>
+                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Manager" asp-action="Index">Менеджеры</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Schedule" asp-action="Index">Расписание(Админ)</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />

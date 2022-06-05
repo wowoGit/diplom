@@ -11,6 +11,7 @@ using testing.Controllers;
 
 namespace testing.Areas.Doctor.Controllers
 {
+    [Area("Doctor")]
     public class AppointmentController : BaseController 
     {
         UserManager<IdentityUser> _userManager;
@@ -21,13 +22,21 @@ namespace testing.Areas.Doctor.Controllers
         {
             _userManager = userManager;
         }
-        [Authorize(Roles ="HeadDoctor")]
         public async  Task<IActionResult> Index()
         {
             var logged_doc = await _userManager.FindByNameAsync(User.Identity.Name);
-            int doc_dep = _context.Doctors.Where(d => d.UserId == logged_doc.Id).Select(d => d.DepartmentId).First();
-            var dep_doctors = await _context.Schedules.Include(s => s.Doctor).Where(d => d.Doctor.DepartmentId == doc_dep).ToListAsync();
-            return View();
+            ViewData["doc_info"] = _context.Doctors.Where(d => d.UserId == logged_doc.Id).First();
+            ViewData["schedule_info"] = await _context.Schedules.Where(s => s.DoctorId == logged_doc.Id && s.DateTime.Date == DateTime.Now.Date).OrderBy(s => s.DateTime).ToListAsync();
+            var doc_app = await _context.Weekschedules.Where(r => r.DocId == logged_doc.Id).ToListAsync();
+            return View(doc_app);
+        }
+        public async  Task<IActionResult> Details(int id)
+        {
+            var logged_doc = await _userManager.FindByNameAsync(User.Identity.Name);
+            ViewData["doc_info"] = _context.Doctors.Where(d => d.UserId == logged_doc.Id).First();
+            ViewData["schedule_info"] = await _context.Schedules.Where(s => s.DoctorId == logged_doc.Id && s.DateTime.Date == DateTime.Now.Date).OrderBy(s => s.DateTime).ToListAsync();
+            var doc_app = await _context.Weekschedules.Where(r => r.DocId == logged_doc.Id).ToListAsync();
+            return View(doc_app);
         }
     }
 }

@@ -45,15 +45,15 @@ namespace testing.Controllers
                             case "Patient":
                                 return RedirectToAction("Index", "Medcard", new { area = "Patient" });
                             case "Admin":
-                                return RedirectToAction("Index", "Doctor", new { area = "Admin" });
+                                return RedirectToAction("Index", "BaseDoctor", new { area = "" });
                             case "Manager":
                                 return RedirectToAction("Index", "Patient", new { area = "Manager" });
                             case "Doctor":
                                 if(userRoles.Contains("HeadDoctor"))
                                 {
-                                return RedirectToAction("Index", "Schedule", new { area = "Doctor" });
+                                return RedirectToAction("Index", "Appointment", new { area = "Doctor" });
                                 }
-                                return RedirectToAction("Details", "Schedule", new { area = "Doctor",UserId = user.Id });
+                                return RedirectToAction("Index", "Appointment", new { area = "Doctor" });
                         }
                     }
                 }

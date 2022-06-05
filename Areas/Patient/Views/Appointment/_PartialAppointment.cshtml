@@ -82,7 +82,7 @@
                                     {
                                         <div class="form-group form-check">
                                             <input type="checkbox" class="form-check-input" id="check">
-                                            <label class="form-check-label" for="check">Использовать направление (действительно до @referral.IssuedDate.ToString("dd/MM/yy"))</label>
+                                            <label class="form-check-label" for="check">Использовать направление (действительно до @referral.IssuedDate.AddYears(1).ToString("dd/MM/yy"))</label>
                                         </div>
                                     }
                                     else

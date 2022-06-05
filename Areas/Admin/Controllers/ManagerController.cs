@@ -18,7 +18,7 @@ namespace testing.Areas.Admin.Controllers
         private readonly UserManager<IdentityUser> _userManager;
 
         public ManagerController(IConfiguration configuration, UserManager<IdentityUser> userManager)
-            :base(configuration.GetConnectionString("AdminController"))
+            :base(configuration.GetConnectionString("AdminConnection"))
         {
             _userManager = userManager;
         }

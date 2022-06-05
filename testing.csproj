@@ -33,7 +33,6 @@
     <Folder Include="Areas\Doctor\Controllers\" />
     <Folder Include="Areas\Doctor\Data\" />
     <Folder Include="Areas\Doctor\Models\" />
-    <Folder Include="Areas\Doctor\Views\" />
     <Folder Include="Areas\Manager\Data\" />
     <Folder Include="Areas\Manager\Models\" />
     <Folder Include="Areas\Patient\Data\" />

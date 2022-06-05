@@ -1,0 +1,109 @@
+﻿@using System.Reflection; 
+@using testing.Extensions; 
+@model IEnumerable<testing.Models.Weekschedule>;
+@{
+    ViewData["Title"] = "Index";
+    var doc_info = ViewData["doc_info"] as Doctor;
+    var schedule_info = ViewData["schedule_info"] as IEnumerable<Schedule>;
+
+}
+
+<div container>
+    <div class="row m-4">
+        <div class="col">
+            <div class="row">
+            <h2>Здравствуйте, @doc_info.Firstname!</h2>
+            </div>
+            <div class="row">
+            @if(schedule_info != null){
+                var shift_start = schedule_info.First().DateTime.ToShortTimeString();
+                var last_app_slot = schedule_info.Last().DateTime;
+                var shift_end = last_app_slot.Add(new TimeSpan(0,0,minutes: 30,0)).ToShortTimeString();
+            <h4>Ваша смена на сегодня: @shift_start - @shift_end</h4>
+            }
+        </div>
+        </div>
+        <div class="col text-right">
+            <h5>
+            Количество приемов на сегодня: @Model.Count()
+            </h5>
+        </div>
+    </div>
+</div>
+<div class="container">
+
+    <table class=" table table-hover">
+
+        <thead>
+            <tr>
+                <th>ФИО Пациента</th>
+                <th>Статус</th>
+                <th>Время</th>
+                <th>Пол</th>
+                <th>Наличие направления</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var app in Model)
+            {
+                var p_birth = DateTime.Now.Year - app.PatientBirth.Year;
+                var gender = app.PatientGender.GetDisplayAttribute();
+            <tr class="app-row" data-url = "/Doctor/Appointment/Details?id=@app.AppId">
+                <td>
+                        <div class="user-info__basic">
+                            <h5 class="mb-0">@app.Lastname</h5>
+                            <h5 class="mb-0">@app.Firstname @app.Patronymic</h5>
+                            <p class="text-muted mb-0">@p_birth лет</p>
+                        </div>
+                </td>
+
+                <td>
+                    @if(app.HistoryId != null)
+                {
+                    <span class="btn btn-success">Обработано</span>
+                }
+                    else if(app.DateTime < DateTime.Now)
+                {
+                    <span class="btn btn-danger">Пропущено</span>
+                }
+                    else 
+                {
+                    <span class="btn btn-warning">Ожидается</span>
+                }
+                </td>
+                <td>
+                    <h6 class="mb-0">@app.DateTime.ToShortDateString()</h6>
+                    <p>@app.DateTime.ToShortTimeString()</p>
+                </td>
+                <td>
+                    <h6>@gender.Name</h6>
+                </td>
+                <td>
+                    @if(app.ReferralId != null)
+                {
+                    <span class="btn btn-success">Присутствует</span>
+                }
+                    else
+                {
+                    <span class="btn btn-danger">Отсутствует</span>
+                }
+                </td>
+                
+            </tr>
+            }
+        </tbody>
+            
+    </table>
+
+</div>
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function($) {
+        $(".app-row").click(function () {
+            var loc = window.location.href;
+            window.location.href = $(this).data("url");
+    });
+});
+</script>

@@ -8,6 +8,14 @@
     {
         Layout = "/Areas/Admin/Views/Shared/_Layout.cshtml";
     }
+    else if (this.User.IsInRole("Manager"))
+    {
+        Layout = "/Areas/Manager/Views/Shared/_Layout.cshtml";
+    }
+    else if(this.User.IsInRole("Doctor"))
+    {
+        Layout = "/Areas/Doctor/Views/Shared/_Layout.cshtml";
+    }
     else
     {
         Layout = "~/Views/Shared/_Layout.cshtml";

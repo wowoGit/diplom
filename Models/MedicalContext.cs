@@ -749,25 +749,30 @@ namespace testing.Models
 
                 entity.Property(e => e.DoctorFname)
                     .HasMaxLength(50)
-                    .HasColumnName("doctor fname");
+                    .HasColumnName("doc_fname");
 
                 entity.Property(e => e.DoctorLname)
                     .HasMaxLength(50)
-                    .HasColumnName("doctor lname");
+                    .HasColumnName("doc_lname");
 
                 entity.Property(e => e.DoctorPatronymic)
                     .HasMaxLength(50)
-                    .HasColumnName("doctor patronymic");
+                    .HasColumnName("doc_patro");
 
-                entity.Property(e => e.Experience).HasColumnName("experience");
 
                 entity.Property(e => e.Firstname)
                     .HasMaxLength(50)
                     .HasColumnName("firstname");
+                entity.Property(e => e.DocId)
+                    .HasColumnName("doc_id");
+                entity.Property(e => e.PatientGender)
+                    .HasColumnName("gender");
 
                 entity.Property(e => e.Info)
                     .HasMaxLength(100)
                     .HasColumnName("info");
+                entity.Property(e => e.PatientBirth)
+                    .HasColumnName("p_birth");
 
                 entity.Property(e => e.Lastname)
                     .HasMaxLength(50)
@@ -778,6 +783,8 @@ namespace testing.Models
                     .HasColumnName("patronymic");
 
                 entity.Property(e => e.ReferralId).HasColumnName("referral_id");
+                entity.Property(e => e.HistoryId).HasColumnName("history_id");
+                entity.Property(e => e.AppId).HasColumnName("app_id");
             });
 
             OnModelCreatingPartial(modelBuilder);

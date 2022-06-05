@@ -14,7 +14,7 @@
 <div class="row m-auto justify-content-between px-3">
     <input class="form-control col-4" type="text" id="search_fname_doctor" onkeyup="myFunction(this.id, d_table.id)" placeholder="Поиск...">
     @if (User.IsInRole("Admin")) { 
-    <a asp-area="Admin" asp-action="Create"><button type="button" class="btn btn-primary">Создать</button></a>
+    <a asp-area="Admin" asp-action="Create" asp-controller="Doctor"><button type="button" class="btn btn-primary">Создать</button></a>
     }
 </div>
 <div class="container">

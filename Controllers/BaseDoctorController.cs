@@ -20,7 +20,7 @@ namespace testing.Controllers
             :base(configuration.GetConnectionString("DefaultConnection"))
         {
         }
-        public async Task<IActionResult> Index(int? page, int? dep)
+        public virtual async Task<IActionResult> Index(int? page, int? dep)
         {
             int page_number = page ?? 1;
             int dep_id = dep ?? 1;
