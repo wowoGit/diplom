@@ -49,7 +49,11 @@ namespace testing.Controllers
                             case "Manager":
                                 return RedirectToAction("Index", "Patient", new { area = "Manager" });
                             case "Doctor":
+                                if(userRoles.Contains("HeadDoctor"))
+                                {
                                 return RedirectToAction("Index", "Schedule", new { area = "Doctor" });
+                                }
+                                return RedirectToAction("Details", "Schedule", new { area = "Doctor",UserId = user.Id });
                         }
                     }
                 }

@@ -15,17 +15,19 @@ namespace testing.Controllers
     public class HomeController : BaseController
     {
 
-        public HomeController(IConfiguration configuration)
+        private readonly RoleManager<IdentityRole> manager;
+        public HomeController(RoleManager<IdentityRole> roleManager,IConfiguration configuration)
             :base(configuration.GetConnectionString("DefaultConnection"))
         {
-
+            manager = roleManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             //var user = new IdentityUser { Email = "patient@gmail.com", UserName = "patient@gmail.com" };
             //await _userManager.CreateAsync(user, "123123");
             //await _userManager.AddToRoleAsync(user, "Patient");
+            //await manager.CreateAsync(new IdentityRole("HeadDoctor"));
             return View();
         }
 

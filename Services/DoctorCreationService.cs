@@ -33,6 +33,8 @@ namespace testing.Services
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, "Doctor");
+                int headDoctorId = _context..Where(r => r.Name == "Главный врач").Select(r => r.Id).First();
+                if(doctor.RoleId = )
                 var created_user = await _userManager.FindByEmailAsync(doctor.Email);
                 Doctor doc = (Doctor)doctor;
                 doc.UserId = created_user.Id;
