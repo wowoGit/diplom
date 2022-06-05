@@ -43,7 +43,6 @@ namespace testing.Areas.Doctor.Controllers
             ViewData["app"] = app_record;
             var historyViewModel = new HistoryVM { appointmentId = id };
             ViewData["Documents"] = new SelectList(_context.Documents, "Id", "Name");
-            
             return View(historyViewModel);
         }
     }

@@ -3,37 +3,77 @@
 *@
 @model testing.ViewModels.HistoryVM;
 @{
-    var mod = Model;
-    var placeholder = 1;
+    var app = ViewData["app"] as Appointment;
+    var patient = app.Medcard.Patient;
+    var age = DateTime.Now.Year - patient.DateOfBirth.Year;
 }
+<div class="row text-center">
+    <div class="col">
+<h1>Обработка приема</h1>
+    </div>
+    </div>
+<div class="row-md-6">
+        <div class="row">
+            <div class="col">
+            <div class="row">
+                <div class="col">
+                <h5><span class="text-muted">Пациент: </span>@patient.Lastname @patient.Firstname @patient.Patronymic</h5>
+            </div>
+            </div>
+            <div class="row">
+            <div class="col">
+                <h5><span class="text-muted">Возраст: </span> @age года </h5>
+        </div>
+        </div></div>
+        </div>
+        <div class="row">
 <div class="container">
 
-    @using(@Html.BeginForm("Create", "History", FormMethod.Post)){
+    @using (@Html.BeginForm("Create", "History", FormMethod.Post))
+    {
         @Html.HiddenFor(m => m.appointmentId)
-            <div class="form-row justify-content-between">
+        <div class="form-row justify-content-between">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="col">
-            <div class="form-group">
-                <label asp-for="Diagnosis" class="control-label"></label>
-                <input asp-for="Diagnosis" class="form-control" placeholder="Имя" />
-                <span asp-validation-for="Diagnosis" class="text-danger"></span>
+                <div class="form-group">
+                    <label asp-for="Diagnosis" class="control-label"></label>
+                    <input asp-for="Diagnosis" class="form-control" placeholder="Имя" />
+                    <span asp-validation-for="Diagnosis" class="text-danger"></span>
+                </div>
             </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                @Html.Partial("/Areas/Doctor/Views/History/_AddDocument.cshtml", Model.HDocuments.FirstOrDefault())
             </div>
             <div class="col">
-            <div class="form-group">
-                <label asp-for="Diagnosis" class="control-label"></label>
-                <select asp-for="Diagnosis" asp-items="ViewBag.Documents" class="form-control">
-                    <option disabled selected>Выбрать...</option>
-                </select>                
-                    <span asp-validation-for="Diagnosis" class="text-danger"></span>
+            <a id="add_row" class="btn btn-primary float-right"> Add Row</a>
             </div>
             </div>
-            </div>
-            <button type="submit" value="submit" class="btn btn-primary"></button>
+            <div class="row">
+                <div id="addMoreDiv"></div>
+        </div><button type="submit" value="submit" class="btn btn-primary"></button>
     }
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+      $('#add_row').on('click', function () {
+        $.ajax({
+            url: '@Url.Action("AddDocument", "History")',
+            type: 'GET',
+            data: {
+            },
+            success: function (result) {
+                $('#addMoreDiv').append(result);
+            },
+            error: function () {
+            }
+        });
+    });
+        </script>
 
-    
 
 
+    </div>
+    </div>
 </div>
-
