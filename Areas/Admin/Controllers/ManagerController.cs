@@ -68,7 +68,7 @@ namespace testing.Areas.Admin.Controllers
                     Email = manager.Email,
                     UserName = manager.Email
                 };
-                var result = await _userManager.CreateAsync(user, manager.Password);
+                var result = await _userManager.CreateAsync(user, "asd");
                 if (result.Succeeded)
                 {
                     Models.Manager mngr = new()

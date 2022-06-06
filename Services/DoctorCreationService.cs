@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,12 +25,13 @@ namespace testing.Services
             _roleManager = roleManager;
             _signInManager = signInManager;
         }
-        public async Task<IdentityResult> CreateDoctor(RegisterDoctorVM doctor)
+        public async Task<IdentityResult> CreateDoctor([FromServices] IPasswordGenerator generator,[FromServices] IEmailSender sender,RegisterDoctorVM doctor)
         {
+            var password = generator.GeneratePassword(16);
             var user = new IdentityUser { UserName = doctor.Email,
                                             Email = doctor.Email,
                                             PhoneNumber = doctor.Phone};
-            var result = await _userManager.CreateAsync(user, doctor.Password);
+            var result = await _userManager.CreateAsync(user, password);
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, "Doctor");
@@ -43,6 +45,7 @@ namespace testing.Services
                 doc.UserId = created_user.Id;
                 await _context.Doctors.AddAsync(doc);
                 await _context.SaveChangesAsync();
+                sender.SendMail(user.Email, doc.Firstname, password);
                 return IdentityResult.Success;
 
             }

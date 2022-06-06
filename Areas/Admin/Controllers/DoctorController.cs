@@ -58,11 +58,11 @@ namespace testing.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([FromServices] IDoctorCreationService creation_service, RegisterDoctorVM doctor)
+        public async Task<IActionResult> Create([FromServices] IPasswordGenerator generator,[FromServices] IEmailSender sender,[FromServices] IDoctorCreationService creation_service, RegisterDoctorVM doctor)
         {
             if (ModelState.IsValid)
             {
-                var result = await creation_service.CreateDoctor(doctor);
+                var result = await creation_service.CreateDoctor(generator, sender,doctor);
                 if(result.Succeeded) {
                     RedirectToAction(nameof(Index));
                 }

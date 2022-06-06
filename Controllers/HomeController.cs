@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using testing.Models;
+using testing.Services;
 
 namespace testing.Controllers
 {
@@ -31,7 +32,7 @@ namespace testing.Controllers
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult About([FromServices] IEmailSender sender,[FromServices] IPasswordGenerator generator)
         {
             return View();
         }

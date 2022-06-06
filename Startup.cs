@@ -50,6 +50,8 @@ namespace testing
                 options.Password.RequiredUniqueChars = 1;
             });
             services.AddScoped<IDoctorCreationService, DoctorCreationService>();
+            services.AddScoped<IPasswordGenerator, PassGenerator>();
+            services.AddScoped<IEmailSender, PasswordEmailSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

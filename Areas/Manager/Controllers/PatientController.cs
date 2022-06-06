@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Npgsql;
 using NpgsqlTypes;
 using testing.Models;
+using testing.Services;
 
 namespace testing.Controllers
 {
@@ -71,14 +72,15 @@ namespace testing.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( RegisterPatientVM patient)
+        public async Task<IActionResult> Create([FromServices]IEmailSender sender,[FromServices]IPasswordGenerator generator, RegisterPatientVM patient)
         {
             if (ModelState.IsValid)
             {
+                var password = generator.GeneratePassword(10);
                 var user = new IdentityUser { UserName = patient.Email,
                                                 Email = patient.Email,
                                                 PhoneNumber = patient.Phone};
-                var result = await _userManager.CreateAsync(user, patient.Password);
+                var result = await _userManager.CreateAsync(user, password);
                 await _userManager.AddToRoleAsync(user, "Patient");
                 var created_user = await _userManager.FindByEmailAsync(patient.Email);
                 var manager_user = await _userManager.FindByEmailAsync("vvs.seal@gmail.com");
@@ -100,6 +102,7 @@ namespace testing.Controllers
                     command.Parameters.AddWithValue("bloodt", patient.BloodType);
 
                     var reader = command.ExecuteReader();
+                    sender.SendMail(user.Email, patient.FirstName, password);
                 }
                 //_context.Add(patient);
                 //await _context.SaveChangesAsync();
