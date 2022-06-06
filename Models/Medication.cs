@@ -12,8 +12,10 @@ namespace testing.Models
             Historymedications = new HashSet<Historymedication>();
         }
 
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public int Id { get; 
+                set; }
+        public string Name { get; 
+            set; }
 
         public virtual ICollection<Historymedication> Historymedications { get; set; }
     }

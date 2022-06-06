@@ -6,8 +6,18 @@
     var doc_info = ViewData["doc_info"] as Doctor;
     var schedule_info = ViewData["schedule_info"] as IEnumerable<Schedule>;
 
+    var notify = TempData["Nofity"];
 }
-
+@if (notify != null)
+{
+    var alertType = TempData.ContainsKey("Success") ? "success" : "danger";
+    <div class="alert alert-@alertType alert-dismissible fade show" role="alert">
+        @TempData["Message"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
 <div container>
     <div class="row m-4">
         <div class="col">

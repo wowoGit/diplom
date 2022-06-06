@@ -1,0 +1,47 @@
+﻿@model testing.Models.Historydocument;
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860k
+*@
+@{
+}
+@using HtmlHelpers.BeginCollectionItemCore;
+@using (Html.BeginCollectionItem("HDocuments"))
+{
+    @Html.HiddenFor(m => m.HistoryId, new { Value = ViewData["HId"]})
+    <div id="removeAddMoreDocs" class="col-xs-12 col-sm-12 form-group px-0">
+        <div class="row">
+            <div class="col-5">
+            <div class="form-group">
+            <label  class="control-label">Документ</label>
+            <select asp-for="DocumentId" asp-items="ViewBag.Documents" class="form-control"  >
+                <option disabled selected>Выбрать...</option>
+            </select>                
+                <span asp-validation-for="DocumentId" class="text-danger"></span>
+            </div>
+            </div>
+            <div class="col-3">
+            <div class="form-group">
+            <label  asp-for="StartDate" class="control-label">Дата открытия</label>
+                <input asp-for="StartDate" type="date"  class="form-control" />
+            </div>
+            </div>
+            <div class="col-3">
+            <div class="form-group">
+            <label  asp-for="EndDate" class="control-label">Дата закрытия</label>
+                <input asp-for="EndDate" type="date" class="form-control" />
+            </div>
+            </div>
+            <div class="col-1 px-1">
+                <div class="container wh-100 mt-4 pt-1 float-right mx-0 px-0">
+                <a class="float-right btn removeDiv hoverable text-center" ><i class="fa-solid text-danger fa-minus"></i></a>
+            </div>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    $(".removeDiv").click(function () {
+        $(this).parents("#removeAddMoreDocs").remove();
+    });
+</script>
+

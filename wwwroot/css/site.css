@@ -363,3 +363,6 @@ body {
 .black-color {
     color: black;
 }
+.hoverable {
+    cursor:pointer;
+}

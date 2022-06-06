@@ -9,7 +9,7 @@ namespace testing.Models
     {
         public int HistoryId { get; set; }
         public int ProcedureId { get; set; }
-        public string Result { get; set; }
+        public string? Result { get; set; }
         public DateTime Date { get; set; }
 
         public virtual History History { get; set; }

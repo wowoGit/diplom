@@ -41,8 +41,11 @@ namespace testing.Areas.Doctor.Controllers
                 .Include(a => a.Medcard.Patient)
                 .Where(a => a.Id == id).FirstOrDefault();
             ViewData["app"] = app_record;
+            ViewData["HId"] = app_record.Id;
             var historyViewModel = new HistoryVM { appointmentId = id };
             ViewData["Documents"] = new SelectList(_context.Documents, "Id", "Name");
+            ViewData["Medication"] = new SelectList(_context.Medications, "Id", "Name");
+            ViewData["Procedure"] = new SelectList(_context.Procedures, "Id", "Name");
             return View(historyViewModel);
         }
     }
