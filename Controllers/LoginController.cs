@@ -61,7 +61,7 @@ namespace testing.Controllers
             
             return View();
         }
-        public IActionResult Login()
+        public IActionResult Index()
         {
             return View();
         }

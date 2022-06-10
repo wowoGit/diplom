@@ -369,3 +369,9 @@ body {
 .main-color {
     color:#ffa847 
 }
+.r-50 {
+    border-radius: 50px;
+}
+.r-25 {
+    border-radius: 25px;
+}

@@ -6,23 +6,29 @@
 }
 
 <h1>@ViewData["Title"]</h1>
-<div class="row">
-    <div class="col-md-4">
+<div class="row mx-auto">
+    <div class="col-md-8 mx-auto">
         <section>
             <form asp-action="Login">
-                <h4>Use a local account to log in.</h4>
+                <h4 class="text-center">Авторизируйтесь, чтобы получить доступ к дополнительным функциям!</h4>
                 <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="row">
+                <div class="col-4 mx-auto">
                 <div class="form-group">
                     <label asp-for="Email"></label>
                     <input asp-for="Email" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
+                </div></div></div>
+                <div class="row">
+                <div class="col-4 mx-auto">
                 <div class="form-group">
                     <label asp-for="Password"></label>
                     <input asp-for="Password" class="form-control" />
                     <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
+                </div></div></div>
+                <div class="row">
+                <div class="col-4 mx-auto">
                 <div class="form-group">
                     <div class="checkbox">
                         <label asp-for="RememberMe">
@@ -30,10 +36,12 @@
                             @Html.DisplayNameFor(m => m.RememberMe)
                         </label>
                     </div>
-                </div>
+                </div></div></div>
+                <div class="row">
+                <div class="col-4 mx-auto">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Log in</button>
-                </div>
+                    <button type="submit" class="btn btn-primary float-right border-radius-5">Log in</button>
+                </div></div></div>
             </form>
         </section>
     </div>
