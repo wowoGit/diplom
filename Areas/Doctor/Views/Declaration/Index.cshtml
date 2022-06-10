@@ -1,0 +1,110 @@
+﻿@model IEnumerable<testing.Models.Declaration>
+@using testing.Extensions; 
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var doc_info = Model.First().Doctor;
+    int total_patients = (int)ViewData["TotalPatients"];
+    int total_active = Model.Where(r => r.Confirmed == true).Count();
+    int needConfirm = total_patients - total_active;
+}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent mx-3">
+        <li class="breadcrumb-item"><a href="#">Главная</a></li>
+        <li class="breadcrumb-item"><a href="#">Врачи</a></li>
+        <li class="breadcrumb-item"><a href="#">Семейные Врачи</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@doc_info.Lastname @doc_info.Firstname @doc_info.Patronymic</li>
+    </ol>
+</nav>
+<div container>
+    <div class="row m-4">
+        <div class="col">
+            <div class="row mt-2 mb-5">
+                <h2>Семейный врач: <span class="text-muted">@doc_info.Lastname @doc_info.Firstname @doc_info.Patronymic</span></h2>
+            </div>
+            <div class="row">
+                    <h4>Количество заключенных деклараций: <span class="text-muted">@total_active</span></h4><br />
+            </div>
+            <div class="row">
+            <h4>
+                Требуют подтверждения: <span class="text-muted">@needConfirm</span>
+            </h4>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+
+    <table class=" table table-hover">
+
+        <thead>
+            <tr>
+                <th>ФИО Пациента</th>
+                <th>Статус</th>
+                <th>Дата подписания</th>
+                <th>Пол</th>
+                <th>Действие</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var decl in Model)
+            {
+                    var p_birth = DateTime.Now.Year - decl.Medcard.Patient.DateOfBirth.Year;
+                    var gender = decl.Medcard.Patient.Gender.GetDisplayAttribute();
+                    <tr class="decl-row" data-url="/Doctor/Appointment/Details?id=@decl.DoctorId">
+                        <td>
+                            <div class="user-info__basic">
+                                <h5 class="mb-0">@decl.Medcard.Patient.Lastname</h5>
+                                <h5 class="mb-0">@decl.Medcard.Patient.Firstname @decl.Medcard.Patient.Patronymic</h5>
+                                <p class="text-muted mb-0">@p_birth лет</p>
+                            </div>
+                        </td>
+
+                            @if (decl.Confirmed)
+                            {
+                                <td>
+                                <span class="btn btn-success">Активно</span>
+                                </td>
+                                <td>
+                                    <h6 class="mb-0">@decl.SignDate.ToShortDateString()</h6>
+                                    <p>Истекает: @decl.SignDate.AddYears(5).ToShortDateString()</p>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                <span class="btn btn-warning">Требует подтвержения</span>
+                                </td>
+                                <td>
+                                    <h6 class="mb-0">Не утверждено</h6>
+                                </td>
+                            }
+                        <td>
+                            <h6>@gender.Name</h6>
+                        </td>
+                            @if (!decl.Confirmed)
+                            {
+                        <td>
+                            <form asp-action="Confirm" method="post" asp-route-returnUrl="@Context.Request.Path">
+                                <input hidden name="id" value="@decl.MedcardId"/>
+                                <button class="btn btn-success">Подтвердить</button>
+                                </form>
+                        </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+
+                    </tr>
+                }
+            
+        </tbody>
+
+    </table>
+
+</div>
+@section Scripts {
+} 

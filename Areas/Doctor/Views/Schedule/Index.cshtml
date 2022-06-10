@@ -1,0 +1,58 @@
+﻿@model IEnumerable<testing.ViewModels.ScheduleListVM>
+@using System.Globalization;
+@{
+    ViewData["Title"] = "Index";
+    var dates = Model.GroupBy(x => x.Date);
+    var dates_first = dates.First().Key.Date;
+    var dates_last = dates.Last().Key.Date;
+    var dateinfo = DateTimeFormatInfo.CurrentInfo;
+}
+
+<h1 class="text-center mb-4">Расписание врачей с @dates_first.ToShortDateString() по @dates_last.ToShortDateString()</h1>
+<h3 class="text-center my-4">Отделение: <span class="text-muted">@ViewBag.Department</span></h3>
+
+    <div class="row">
+    <div class="col m-auto">
+        <!-- CHECKBOX LIST -->
+        @foreach (var date in dates)
+        {
+            <div class="row">
+                <div class="col">
+            <div class="row">
+                <div class="col ml-lg-5">
+            <h3 class="ml-lg-5">@dateinfo.GetDayName(date.Key.DayOfWeek).ToUpper(), <span class="text-muted">@date.Key.ToLongDateString()</span></h3></div></div>
+                        @foreach (var doc_schedule in date)
+                        {
+                            var total_apps = doc_schedule.Weekschedules.Where(s => s.AppId != null).Count();
+                            var app_first = doc_schedule.Weekschedules.First();
+                            var app_last = doc_schedule.Weekschedules.Last();
+                            var shift_start = app_first.DateTime.ToShortTimeString();
+                            var shift_end = app_last.DateTime.AddMinutes(30).ToShortTimeString();
+                         <div class="row my-4 ">
+                             <div class="bg-light-gray h-100 card rounded border-1 shadow-sm position-relative m-auto w-75">
+                                 <div class="card-body">
+                                     <div class="d-flex align-items-center mb-4 pb-4 border-bottom border-dark">
+                                         <i class="fa-regular fa-calendar fa-3x"></i>
+                                         <div class="ms-3 ml-1">
+                                             <h4 class="text-uppercase fw-weight-bold mb-0">@app_first.DoctorLname @app_first.DoctorFname @app_first.DoctorPatronymic</h4>
+                                             <p class="text-gray fst-italic mb-0 ml-1">@app_first.RoleName</p>
+                                         </div>
+                                     </div>
+                                         <div class="ms-3 ml-1">
+                                             <div class="row">
+                                             <div class="col">
+                                             <h5 class="fw-weight-bold ml-1 mb-0">Начало смены: <span class="text-muted">@shift_start</span></h5>
+                                             <h5 class="fw-weight-bold ml-3 mb-0">Конец смены: <span class="text-muted">@shift_end</span></h5>
+                                         </div>
+                                             <div class="col">
+                                             <h5 class="fw-weight-bold mb-0">Количество приемов: <span class="text-muted">@total_apps</span></h5>
+                                         </div>
+                                         </div>
+                                         </div>
+                    </div>
+                </div>
+            </div>
+                        }</div></div>
+        }
+    </div>
+    </div>
