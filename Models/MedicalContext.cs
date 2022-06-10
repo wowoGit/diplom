@@ -17,6 +17,7 @@ namespace testing.Models
         }
 
         public virtual DbSet<Appointment> Appointments { get; set; }
+        public virtual DbSet<Freepatients> Freepatients { get; set; }
         public virtual DbSet<Completedmeeting> Completedmeetings { get; set; }
         public virtual DbSet<Allmeeting> Allmeetings { get; set; }
         public virtual DbSet<Activereferral> Activereferrals { get; set; }
@@ -98,6 +99,22 @@ namespace testing.Models
                     .HasConstraintName("appoitment_schedule_id_fkey");
             });
 
+
+            modelBuilder.Entity<Freepatients>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("freepatients");
+
+                entity.Property(e => e.Firstname);
+
+                entity.Property(e => e.Lastname);
+
+                entity.Property(e => e.Patronymic);
+
+                entity.Property(e => e.Pid);
+                entity.Property(e => e.DateofBirth);
+            });
             modelBuilder.Entity<Completedmeeting>(entity =>
             {
                 entity.HasNoKey();
@@ -145,6 +162,7 @@ namespace testing.Models
                 entity.HasIndex(e => e.DoctorId, "IX_declaration_doctor_id");
 
                 entity.Property(e => e.MedcardId).HasColumnName("medcard_id");
+                entity.Property(e => e.Confirmed);
 
                 entity.Property(e => e.DoctorId)
                     .IsRequired()
@@ -286,6 +304,7 @@ namespace testing.Models
                 entity.ToTable("familydoctors");
 
                 entity.Property(e => e.Experience).HasColumnName("experience");
+                entity.Property(e => e.UserId);
 
                 entity.Property(e => e.Firstname)
                     .HasMaxLength(50)
@@ -746,6 +765,8 @@ namespace testing.Models
                 entity.ToTable("weekschedule");
 
                 entity.Property(e => e.DateTime).HasColumnName("date_time");
+                entity.Property(e => e.RoleName);
+                entity.Property(e => e.DepName);
 
                 entity.Property(e => e.DoctorFname)
                     .HasMaxLength(50)

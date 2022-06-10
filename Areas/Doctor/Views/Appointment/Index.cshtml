@@ -57,7 +57,8 @@
         <tbody>
             @foreach (var app in Model)
             {
-                var p_birth = DateTime.Now.Year - app.PatientBirth.Year;
+                if(app.AppId != null) { 
+                var p_birth = DateTime.Now.Year - app.PatientBirth?.Year;
                 var gender = app.PatientGender.GetDisplayAttribute();
             <tr class="app-row" data-url = "/Doctor/Appointment/Details?id=@app.AppId">
                 <td>
@@ -101,6 +102,7 @@
                 </td>
                 
             </tr>
+            }
             }
         </tbody>
             

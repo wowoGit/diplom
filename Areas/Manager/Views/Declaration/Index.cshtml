@@ -1,47 +1,101 @@
-﻿@model IEnumerable<testing.Models.Declaration>
+﻿@model IPagedList<testing.Models.Declaration>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Bootstrap4.Core;
+@using X.PagedList;
+<h1 class="text-center mb-lg-5">Семейные декларации</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+    <div class="modal fade" id="decModal" tabindex="-1" role="dialog" aria-labelledby="decModellabel">
+        <div id="decModalContent"></div>
+    </div>
+<div class="row m-auto justify-content-between">
+<input class="form-control col-4 mb-4" type="text" id="search_fname" onkeyup="myFunction(this.id, dec_table.id)" placeholder="Поиск...">
+<a class="create-declaration" data-url="Declaration/Create"><button type="button" class="btn btn-primary">Создать</button></a></div>
+<table class="table" id="dec_table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.SignDate)
-            </th>
             <th>
                 ФИО Врача
             </th>
             <th>
                 ФИО Пациента
             </th>
-            <th></th>
+            <th>
+                Дата заключения декларации
+            </th>
+            <th>Дата окончания договора</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
+    var doc_name = item.Doctor.Lastname + ' ' + item.Doctor.Firstname + ' ' + item.Doctor.Patronymic;
+    var patient_name = item.Medcard.Patient.Lastname + ' ' + item.Medcard.Patient.Firstname + ' ' + item.Medcard.Patient.Patronymic;
+    var date_expire = item.SignDate.AddYears(5);
         <tr>
+            <td>
+                @doc_name
+            </td>
+            <td>
+                @patient_name
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.SignDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Doctor.Firstname + ' ' + item.Doctor.Patronymic + ' ' + item.Doctor.Lastname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Medcard.PatientId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MedcardId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MedcardId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MedcardId">Delete</a>
+                @date_expire.ToShortDateString()
             </td>
         </tr>
 }
     </tbody>
 </table>
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $(function () {
+        $(".selectlist").select2();
+        });
+        </script>
+<script src="~/js/page_search.js"></script>
+    <script>
+        $('.alert').alert();
+        $(function () {
+            $(".create-declaration").click(function () {
+                var $buttonClicked = $(this);
+                var url = $buttonClicked.attr('data-url');
+                var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    contentType: "application/json; charset=utf-8",
+                    data: {},
+                    datatype: "json",
+                    success: function (data) {
+                        $('#decModalContent').html(data);
+                        $('#decModal').modal(options);
+                        $('#decModal').modal('show');
+
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+        });
+
+    </script>
+}
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+    new Bootstrap4PagedListRenderOptions
+    {
+        UlElementClasses = new string[] { "pagination", "justify-content-center" },
+        LiElementClasses = new string[] {"page-item"},
+        ActiveLiElementClass = "active",
+        MaximumPageNumbersToDisplay = 5
+    }
+    )
+

@@ -4,38 +4,43 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Declaration</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="MedcardId" class="control-label"></label>
-                <select asp-for="MedcardId" class ="form-control" asp-items="ViewBag.MedcardId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="DoctorId" class="control-label"></label>
-                <select asp-for="DoctorId" class ="form-control" asp-items="ViewBag.DoctorId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="SignDate" class="control-label"></label>
-                <input asp-for="SignDate" class="form-control" />
-                <span asp-validation-for="SignDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <div class=" row">
+            <div class="modal-dialog w-50">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="decModallabel">Оформление декларации</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form asp-action="Create">
+                            @Html.HiddenFor(m => m.SignDate)
+                            <div class="form-group">
+                                <label class="control-label">Выберите пациента</label>
+                                <select id="patientSelect" asp-for="MedcardId" class="form-control selectlist" asp-items="ViewBag.MedcardId"></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Выберите семейного врача</label>
+                                <select asp-for="DoctorId" class="form-control selectlist" asp-items="ViewBag.DoctorId"></select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                <input type="submit" class="btn btn-primary" value="Создать декларацию" />
+                            </div>
+                        </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
+</div>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $(function () {
+        $(".selectlist").select2();
+        });
+    </script>
 }
