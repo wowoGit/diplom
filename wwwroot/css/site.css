@@ -375,3 +375,13 @@ body {
 .r-25 {
     border-radius: 25px;
 }
+.plug {
+    height:100px;
+}
+.time {
+  color: #fff;
+  background: #1977cc;
+}
+.plug-50 {
+    height:50px;
+}
