@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using testing.Controllers;
 using testing.Models;
 using testing.Services;
 using testing.ViewModels;
@@ -15,13 +17,12 @@ namespace testing.Areas.Doctor.Controllers
 {
     [Area("Doctor")]
     [Authorize(Roles ="Doctor,HeadDoctor")]
-    public class ScheduleController : Controller
+    public class ScheduleController : BaseController
     {
-        private readonly MedicalContext _context;
 
-        public ScheduleController(MedicalContext context)
+        public ScheduleController(IConfiguration configuration)
+            : base(configuration.GetConnectionString("DoctorConnection"))
         {
-            _context = context;
         }
 
         // GET: Doctor/Schedule

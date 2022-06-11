@@ -1,0 +1,95 @@
+﻿@model IEnumerable<testing.Models.DaySchedule>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using System.Globalization;
+@{
+    var dateinfo = DateTimeFormatInfo.CurrentInfo;
+    Layout = null;
+} <div class="row">
+            <div class="modal-dialog w-100 mw-700">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="famModalLabel">Запись на прием</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                        <div class="col-3">
+                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                            @foreach(var (item,i) in Model.Select((value,i)=>(value,i+1)))
+                                    {
+                                        var active = i==0 ? "active" : "";
+                                        var selected = i == 0 ? true : false;
+                            <a class="nav-link @active" id="@item.Date.DayOfWeek-tab" data-toggle="pill" href="#@item.Date.DayOfWeek" role="tab" aria-controls="@item.Date.DayOfWeek" aria-selected="@selected">@item.Date.ToShortDateString()</a>
+                            }
+                        </div>
+                        </div>
+                        <div class="col">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            @foreach(var (item,i) in Model.Select((value,i)=>(value,i)))
+                                    {
+                                        var active = i==0 ? "active" : "";
+                                        var selected = i == 0 ? true : false;
+                            <div class="tab-pane fade show @active" id="@item.Date.DayOfWeek" role="tabpanel" aria-labelledby="@item.Date.DayOfWeek-tab">
+                                <h3 class="text-center">@dateinfo.GetDayName(item.Date.DayOfWeek)</h3>
+                            <div class="col my-4">
+                <div class="bg-light-gray card rounded border-1 shadow-sm position-relative">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-4 pb-4 border-bottom border-dark">
+                                                    </div>
+                        @foreach (var time in item.records)
+                        {
+                            @if (time.Id != null)
+                            {
+                            }
+                            else
+                            {
+                                <button type="button" data-id="@time.ScheduleId" doctor-id="@time.DoctorId" class="time-button button time border-0 padding-5px-tb padding-15px-lr  margin-10px-bottom text-white font-size16 xs-font-size13 my-2">@time.DateTime.ToString("HH:mm")</button>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+
+</div>
+                                    }
+                        </div>
+                        </div>
+                    </div>
+                    <div class="row" style="display:none;" id="info-show">
+                        <div class="col">
+                        <form asp-action="CreateFamApp" asp-route-returnUrl="/Patient/FamilyDoctor">
+                        <div class="row">
+                        <div class="col-9 pr-0 pl-4">
+                        <input hidden name="ScheduleId" id="scheduleId"/>
+                        <input class="form-control" name="Info" placeholder="Жалоба..." />
+                    </div>
+                        <div class="col ml-15 pl-4">
+                            <button class="btn btn-primary border-radius-5"type="submit">Записаться</button>
+                    </div>
+                    </div>
+                        </form>
+                        </div></div>
+                    
+                    </div>
+                    </div>
+                    </div>
+        <script src="/lib/jquery/dist/jquery.min.js"></script>
+        <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('.time-button').click(function () {
+                    var $buttonClicked = $(this);
+                    $('#scheduleId').val($buttonClicked.attr('data-id'));
+                    console.log($('#scheduleId').val());
+                    $('#info-show').toggle("slide");
+                });
+                });
+        </script>
+                    </div> 
+   
+
+

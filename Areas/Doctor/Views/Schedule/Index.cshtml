@@ -8,9 +8,17 @@
     var dateinfo = DateTimeFormatInfo.CurrentInfo;
 }
 
-<h1 class="text-center mb-4">Расписание врачей с @dates_first.ToShortDateString() по @dates_last.ToShortDateString()</h1>
-<h3 class="text-center my-4">Отделение: <span class="text-muted">@ViewBag.Department</span></h3>
+<div class="container">
+    <div class="modal fade" id="scModal" tabindex="-1" role="dialog" aria-labelledby="scModalLabel">
+        <div id="scModalContent"></div>
+    </div>
 
+    <div class="plug-50 container"></div>
+<h1 class="header-color text-center mb-4">Расписание врачей с @dates_first.ToShortDateString() по @dates_last.ToShortDateString()</h1>
+    <div class="container d-flex justify-content-between mx-5  w-85">
+<h3 class="header-color  my-4">Отделение: <span class="text-muted">@ViewBag.Department</span></h3>
+    <button class="btn btn-primary align-self-center schedule-create">Создать смену</button>
+</div>
     <div class="row">
     <div class="col m-auto">
         <!-- CHECKBOX LIST -->
@@ -20,7 +28,7 @@
                 <div class="col">
             <div class="row">
                 <div class="col ml-lg-5">
-            <h3 class="ml-lg-5">@dateinfo.GetDayName(date.Key.DayOfWeek).ToUpper(), <span class="text-muted">@date.Key.ToLongDateString()</span></h3></div></div>
+            <h3 class="ml-lg-5 header-color">@dateinfo.GetDayName(date.Key.DayOfWeek).ToUpper(), <span class="text-muted">@date.Key.ToLongDateString()</span></h3></div></div>
                         @foreach (var doc_schedule in date)
                         {
                             var total_apps = doc_schedule.Weekschedules.Where(s => s.AppId != null).Count();
@@ -55,4 +63,34 @@
                         }</div></div>
         }
     </div>
+    </div>
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $('.alert').alert();
+        var detailUrl = '/Doctor/Schedule/Create';
+        $(function () {
+            $(".schedule-create").click(function () {
+                var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: detailUrl,
+                    contentType: "application/json; charset=utf-8",
+                    data: {},
+                    datatype: "json",
+                    success: function (data) {
+                        $('#scModalContent').html(data);
+                        $('#scModal').modal(options);
+                        $('#scModal').modal('show');
+
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+        });
+
+    </script>
+
     </div>

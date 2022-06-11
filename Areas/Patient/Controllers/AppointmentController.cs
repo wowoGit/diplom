@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using testing.Controllers;
@@ -65,6 +66,33 @@ namespace testing.Areas.Patient.Controllers
                 }
             }
             return RedirectToAction("Index","PublicSchedule", new { area= "",userId = docId });
+        }
+        public async Task<IActionResult> CreateFamilyApp(string DoctorId)
+        {
+            var dt = await _context.Freeappointmentsweeks.Where(d => d.DoctorId == DoctorId).Select(r => r.DateTime.Date).Distinct().OrderBy(r => r.Date).ToListAsync();
+            var model = new List<DaySchedule>();
+            foreach(var date in dt)
+            {
+            var records = _context.Freeappointmentsweeks.Where(r => r.DateTime.Date == date && r.DoctorId == DoctorId).ToList();
+                model.Add(new DaySchedule { Date = date, records = records });
+            }
+
+            return View("_TabbedAppointment",model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateFamApp(int ScheduleId, string Info,string returnUrl)
+        {
+            var auth_patient = await _userManager.FindByNameAsync(User.Identity.Name);
+            var app = new Appointment
+            {
+                ScheduleId = ScheduleId,
+                Info = Info,
+                MedcardId = auth_patient.Id
+            };
+            _context.Appointments.Add(app);
+            await _context.SaveChangesAsync();
+            return Redirect(returnUrl);
         }
     }
 }

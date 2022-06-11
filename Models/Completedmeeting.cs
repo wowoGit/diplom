@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
@@ -8,6 +9,10 @@ namespace testing.Models
     public partial class Completedmeeting
     {
         public int Id { get; set; }
+        [Column("p_id")]
+        public string PatientId { get; set; }
+        [Column("d_id")]
+        public string DoctorId { get; set; }
         public string Fname { get; set; }
         public string Lname { get; set; }
         public string Patronymic { get; set; }

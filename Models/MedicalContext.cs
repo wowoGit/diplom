@@ -122,6 +122,8 @@ namespace testing.Models
                 entity.ToTable("completedmeetings");
 
                 entity.Property(e => e.Datec).HasColumnName("datec");
+                entity.Property(e => e.PatientId);
+                entity.Property(e => e.DoctorId);
 
                 entity.Property(e => e.Dateo).HasColumnName("dateo");
 

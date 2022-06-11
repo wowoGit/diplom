@@ -22,6 +22,8 @@ namespace testing.Models
         public string Lastname { get; set; }
         [Column("patronymic")]
         public string Patronymic { get; set; }
+        [Column("doc_id")]
+        public string DocId { get; set; }
         [Column("medcardid")]
         public string MedcardId { get; set; }
         [Column("appointmentid")]

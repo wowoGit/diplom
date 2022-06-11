@@ -9,11 +9,13 @@
     int total_active = Model.Where(r => r.Confirmed == true).Count();
     int needConfirm = total_patients - total_active;
 }
+<div class="container">
+    <div class="container plug-50"></div>
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-transparent mx-3">
         <li class="breadcrumb-item"><a href="#">Главная</a></li>
         <li class="breadcrumb-item"><a href="#">Врачи</a></li>
-        <li class="breadcrumb-item"><a href="#">Семейные Врачи</a></li>
+        <li class="breadcrumb-item"><a href="#">Семейная практика</a></li>
         <li class="breadcrumb-item active" aria-current="page">@doc_info.Lastname @doc_info.Firstname @doc_info.Patronymic</li>
     </ol>
 </nav>
@@ -105,6 +107,7 @@
 
     </table>
 
+</div>
 </div>
 @section Scripts {
 } 

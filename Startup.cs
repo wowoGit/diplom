@@ -52,6 +52,7 @@ namespace testing
             services.AddScoped<IDoctorCreationService, DoctorCreationService>();
             services.AddScoped<IPasswordGenerator, PassGenerator>();
             services.AddScoped<IEmailSender, PasswordEmailSender>();
+            services.AddScoped<IScheduleCreator, ScheduleCreator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
