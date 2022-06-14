@@ -28,6 +28,8 @@ namespace testing.Models
         public string MedcardId { get; set; }
         [Column("appointmentid")]
         public int? AppointmentId { get; set; }
+        [Column("real_app_id")]
+        public int RealId { get; set; }
         [Column("depname")]
         public string Depname { get; set; }
         [Column("appdate")]

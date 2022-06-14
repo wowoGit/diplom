@@ -6,7 +6,7 @@
     var dateinfo = DateTimeFormatInfo.CurrentInfo;
     var doc_rec = ViewData["Doctor"] as Doctor;
     var doc_name = @doc_rec.Lastname + ' ' + @doc_rec.Firstname + ' ' + @doc_rec.Patronymic;
-
+    var url = User.IsInRole("Manager") ? "Manager/Appointment/Create" : "Patient/Appointment/Create";
 
 }
 
@@ -111,7 +111,8 @@
     <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $('.alert').alert();
-        var detailUrl = '/Patient/Appointment/Create';
+        var detailUrl = '@url';
+        console.log(detailUrl);
         $(function () {
             $(".time-button").click(function () {
                 var $buttonClicked = $(this);

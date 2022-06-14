@@ -19,22 +19,24 @@
         var doctor_fullname = history_record.Lastname +
             ' ' + history_record.Firstname +
             ' ' + history_record.Patronymic;
+        bool pending = false;
         <div class=" history_card card border-primary mb-3 m-2">
             <div class=" card-header d-flex font-weight-bold justify-content-around px-0">
                 @department
                 @if (completed)
                 {
-                    <span class="badge badge-success">Завершен</span>
+                    <span class="badge badge-success align-self-center">Завершен</span>
                 }
                 else
                 {
                     if (history_record.Appdate < DateTime.Now)
                     {
-                        <span class="badge badge-danger">Пропущен</span>
-                    }
-                    else
-                    {
-                        <span class="badge badge-warning">Ожидается</span>
+                        <span class="badge badge-danger align-self-center">Пропущен</span>
+                                }
+                                else
+                                {
+                                    pending = true;
+                        <span class="badge badge-warning align-self-center">Ожидается</span>
                     }
                 }
                     </div>
@@ -45,6 +47,10 @@
                 @if (completed)
                 {
                 <a asp-action="Details"  asp-route-id="@history_record.AppointmentId" class="btn btn-primary">Подробнее...</a>
+                }
+                else if (pending)
+                {
+                <a asp-controller="Appointment" asp-action="Delete" onclick="return confirm('Вы действительно хотите отменить прием?')"  asp-route-id="@history_record.RealId" class="btn btn-danger">Отменить</a>
                 }
             </div>
         </div>

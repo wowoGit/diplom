@@ -17,11 +17,10 @@
         </button>
     </div>
 }
-<div class="container">
-    <div class="plug-50 container"></div>
-<div class="row text-center my-4">
+<div class="container mb-2">
+<div class="row text-center my-4 mt-5">
     <div class="col m-auto">
-<h1>Обработка приема</h1>
+<h1 class="header-color">Обработка приема</h1>
     </div>
     </div>
 <div class="row-md-6">
@@ -62,6 +61,14 @@
             </div>
         </div>
         <div class="row">
+            <div class="col align-items-center">
+                <h5>Выписать направление<a class="btn hoverable mt-0 pt-1"><i class="fa-solid fa-plus text-success mt-0"></i></a></h5>
+            <select asp-for="ReferralId" asp-items="ViewBag.Departments" class="form-control"  >
+                <option disabled selected>Выбрать...</option>
+            </select>                
+            </div>
+        </div>
+        <div class="row mt-3">
             <div class="col align-items-center">
                 <h5>Добавить медикаменты<a id="add_row_meds" class="btn hoverable mt-0 pt-1"><i class="fa-solid fa-plus text-success mt-0"></i></a></h5>
             </div>

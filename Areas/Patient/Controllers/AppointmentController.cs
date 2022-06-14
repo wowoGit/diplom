@@ -17,7 +17,7 @@ namespace testing.Areas.Patient.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
 
-        public AppointmentController(IConfiguration configuration, UserManager<IdentityUser> userManager):
+        public AppointmentController(IConfiguration configuration, UserManager<IdentityUser> userManager) :
             base(configuration.GetConnectionString("PatientConnection"))
         {
             _userManager = userManager;
@@ -28,7 +28,7 @@ namespace testing.Areas.Patient.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Create(int ScheduleId,string DoctorId)
+        public async Task<IActionResult> Create(int ScheduleId, string DoctorId)
         {
             var patient = await _userManager.FindByNameAsync(User.Identity.Name);
             //ViewData["Referrals"] = new SelectList(referrals, "Id", "Department.Name");
@@ -43,7 +43,7 @@ namespace testing.Areas.Patient.Controllers
                 MedcardId = patient.Id,
             };
             app.Schedule = _context.Schedules.Include(d => d.Doctor).Where(m => m.Id == ScheduleId).FirstOrDefault();
-            return View("_PartialAppointment",app);
+            return View("_PartialAppointment", app);
         }
 
         [HttpPost]
@@ -55,33 +55,33 @@ namespace testing.Areas.Patient.Controllers
                 TempData["AppInfo"] = true;
                 try
                 {
-                _context.Appointments.Add(app);
-                await _context.SaveChangesAsync();
-                TempData["Message"] = "Прием успешно зарегистрирован!"; 
-                TempData["Success"] = true; 
+                    _context.Appointments.Add(app);
+                    await _context.SaveChangesAsync();
+                    TempData["Message"] = "Прием успешно зарегистрирован!";
+                    TempData["Success"] = true;
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     TempData["Message"] = e.InnerException?.Message;
                 }
             }
-            return RedirectToAction("Index","PublicSchedule", new { area= "",userId = docId });
+            return RedirectToAction("Index", "PublicSchedule", new { area = "", userId = docId });
         }
         public async Task<IActionResult> CreateFamilyApp(string DoctorId)
         {
             var dt = await _context.Freeappointmentsweeks.Where(d => d.DoctorId == DoctorId).Select(r => r.DateTime.Date).Distinct().OrderBy(r => r.Date).ToListAsync();
             var model = new List<DaySchedule>();
-            foreach(var date in dt)
+            foreach (var date in dt)
             {
-            var records = _context.Freeappointmentsweeks.Where(r => r.DateTime.Date == date && r.DoctorId == DoctorId).ToList();
+                var records = _context.Freeappointmentsweeks.Where(r => r.DateTime.Date == date && r.DoctorId == DoctorId).ToList();
                 model.Add(new DaySchedule { Date = date, records = records });
             }
 
-            return View("_TabbedAppointment",model);
+            return View("_TabbedAppointment", model);
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateFamApp(int ScheduleId, string Info,string returnUrl)
+        public async Task<ActionResult> CreateFamApp(int ScheduleId, string Info, string returnUrl)
         {
             var auth_patient = await _userManager.FindByNameAsync(User.Identity.Name);
             var app = new Appointment
@@ -93,6 +93,15 @@ namespace testing.Areas.Patient.Controllers
             _context.Appointments.Add(app);
             await _context.SaveChangesAsync();
             return Redirect(returnUrl);
+        }
+
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var app = _context.Appointments.Where(r => r.Id == id).First();
+            _context.Appointments.Remove(app);
+            await _context.SaveChangesAsync();
+            return Redirect("/Patient/History");
         }
     }
 }

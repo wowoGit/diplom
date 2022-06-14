@@ -34,6 +34,7 @@ namespace testing.Areas.Doctor.Controllers
         }
         public IActionResult Details(int id)
         {
+            ViewData["Departments"] = new SelectList(_context.Departments, "Id", "Name");
             var app_record = _context.Appointments
                 .Include(a => a.Medcard)
                 .Include(a => a.Schedule)

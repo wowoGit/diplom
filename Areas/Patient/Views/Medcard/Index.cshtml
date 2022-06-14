@@ -63,18 +63,22 @@
             <div class="row">
             <div class="col">
             <div class="form-group">
-                <label asp-for="user_info.PhoneNumber" class="control-label"></label>
+                <label asp-for="user_info.PhoneNumber" class="control-label">Номер телефона</label>
                 <input id="phone" type="text" asp-for="user_info.PhoneNumber" class="form-control" placeholder="+38 (000) 000-00-00" />
                 <span asp-validation-for="user_info.PhoneNumber" class="text-danger"></span>
             </div>
             </div>
             <div class="col">
             <div class="form-group">
-                <label asp-for="user_info.Email" class="control-label"></label>
+                <label asp-for="user_info.Email" class="control-label">Электронная почта</label>
                 <input asp-for="user_info.Email" class="form-control" />
                 <span asp-validation-for="user_info.Email" class="text-danger"></span>
             </div>
             </div>
             </div>
+            <div class="row">
+                <div class="col">
+                    <button class="btn btn-primary float-right">Сохранить</button>
+                </div>
         </form>
 </div></div>
