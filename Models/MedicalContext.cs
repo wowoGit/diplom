@@ -583,6 +583,11 @@ namespace testing.Models
                     .HasForeignKey<Medcard>(d => d.PatientId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("medcard_patient_id_fkey");
+                entity.HasOne(d => d.Manager)
+                    .WithMany(p => p.Medcards)
+                    .HasForeignKey(d => d.ManagerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("medcard_manager_id_fkey");
             });
 
             modelBuilder.Entity<Medication>(entity =>

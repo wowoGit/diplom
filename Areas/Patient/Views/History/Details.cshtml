@@ -102,5 +102,37 @@
                     </div>
             </div>
             }
+            <div class="row">
+                <div class="col">
+                <label class="control-label">Справки</label>
+            </div><div class="col">
+                <label class="control-label">Дата открытия</label>
+            </div><div class="col">
+                <label class="control-label">Дата закрытия</label>
+            </div>
+            </div>
+                @foreach(var doc in Model.Select(m => m.Doc).Distinct())
+                    {
+                        var result = Model.Where(m => m.Doc == doc).Select(m => m.Dateo).First();
+                        var result2 = Model.Where(m => m.Doc == doc).Select(m => m.Datec).First();
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                <input readonly asp-for="@doc" class="form-control"/>
+                    </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                <input readonly asp-for="@result"type="date" class="form-control"/>
+                    </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                <input readonly asp-for="@result2" type="date" class="form-control"/>
+                    </div>
+                    </div>
+            </div>
+            }
+
         </form>
 </div>

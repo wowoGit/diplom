@@ -18,6 +18,7 @@ namespace testing.Models
         public DateTime ExpiredDate { get; set; }
 
         public virtual Patient Patient { get; set; }
+        public virtual Manager Manager { get; set; }
         public virtual Declaration Declaration { get; set; }
         public virtual ICollection<Appointment> Appointments { get; set; }
     }

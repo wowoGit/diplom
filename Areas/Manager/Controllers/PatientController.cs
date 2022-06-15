@@ -82,8 +82,8 @@ namespace testing.Controllers
                                                 PhoneNumber = patient.Phone};
                 var result = await _userManager.CreateAsync(user, password);
                 await _userManager.AddToRoleAsync(user, "Patient");
-                var created_user = await _userManager.FindByEmailAsync(patient.Email);
-                var manager_user = await _userManager.FindByEmailAsync("vvs.seal@gmail.com");
+                var created_user = await _userManager.FindByNameAsync(patient.Email);
+                var manager_user = await _userManager.FindByNameAsync(User.Identity.Name);
 
                 using(NpgsqlConnection con = new NpgsqlConnection(connectionString))
                 {

@@ -5,6 +5,7 @@
 *@
 @{
     var doc = ViewBag.Doc as Doctor;
+    var decl = ViewBag.Decl as Declaration;
 }
 <div class="modal fade" id="famModal" tabindex="-1" role="dialog" aria-labelledby="famModalLabel">
         <div id="famModalContent"></div>
@@ -55,6 +56,19 @@
                         </li>
                         <li class="mb-1">
                             Город: <a href="#">Одесса</a>
+                        </li>
+                    </ul>
+                </div>
+                <hr class="my-0">
+                <div class="card-body">
+                    <h5 class="h6 card-title">Декларация</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-1">
+                            Дата заключения: <span class="text-muted">@decl.SignDate.ToShortDateString()</span>
+                        </li>
+
+                        <li class="mb-1">
+                            Дата истекания: <span class="text-muted">@decl.SignDate.AddYears(5).ToShortDateString()</span>
                         </li>
                     </ul>
                 </div>

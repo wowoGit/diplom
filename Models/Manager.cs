@@ -27,5 +27,6 @@ namespace testing.Models
         [Display(Name = "gender")]
         [Column("gender")]
         public Gender Gender { get; set; }
+        public virtual ICollection<Medcard> Medcards { get; set; }
     }
 }

@@ -29,6 +29,7 @@ namespace testing.Areas.Patient.Controllers
             var patient = await _userManager.FindByNameAsync(User.Identity.Name);
             var decl = _context.Declarations.Include(r => r.Doctor).Where(r => r.MedcardId == patient.Id).First();
             ViewData["Doc"] = _context.Doctors.Include(r => r.Department).Include(r => r.Role).Where(r => r.UserId == decl.DoctorId).First();
+            ViewData["Decl"] = decl;
             var apps = _context.Allmeetings.Where(r => r.MedcardId == patient.Id && r.DocId == decl.DoctorId);
             return View(await apps.ToListAsync());
         }

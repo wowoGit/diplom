@@ -29,7 +29,7 @@ namespace testing.Controllers
             var model = new List<DaySchedule>();
             foreach(var date in dt)
             {
-            var records = _context.Freeappointmentsweeks.Where(r => r.DateTime.Date == date).ToList();
+            var records = _context.Freeappointmentsweeks.Where(r => r.DateTime.Date == date.Date && r.DoctorId == userId).ToList();
                 model.Add(new DaySchedule { Date = date, records = records });
             }
             //var doc_schedule = _context.Freeappointmentsweeks.Select(r => r.DateTime.Date).Distinct()
